@@ -15,7 +15,7 @@ public class Point {
         if (obj instanceof Point){
             return xyz.equals((Object)((Point)obj).xyz);
         }
-    return false;
+        return false;
     }
 
     @Override
