@@ -15,9 +15,6 @@ public class Point {
         if (obj instanceof Point){
             return xyz.equals((Object)((Point)obj).xyz);
         }
-        else if (obj instanceof Vector) {
-            return xyz.equals((Object)((Vector)obj).xyz);
-        }
         return false;
     }
 
@@ -26,11 +23,11 @@ public class Point {
         return xyz.toString();
     }
     public Point add(Vector v){
-        return (new Point(xyz.add(v.xyz)));
+        return new Point(xyz.add(v.xyz));
     }
     public Vector subtract(Point a)
     {
-        return (new Vector(xyz.subtract(v.xyz)));
+        return (new Vector(xyz.subtract(a.xyz)));
     }
 
     public double distance(Point p)
@@ -42,7 +39,6 @@ public class Point {
     {
         Double3 Sub = xyz.subtract(p.xyz);
         Double3 Squared = Sub.product(Sub);
-        return (Squared.SumCoordinate());
+        return (Squared.d1 + Squared.d2 + Squared.d3);
     }
-
 }
