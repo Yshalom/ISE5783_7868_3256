@@ -1,7 +1,5 @@
 package primitives;
 
-import java.util.Vector;
-
 public class Point {
     protected Double3 xyz;
     public Point(double x,double y,double z){
@@ -10,6 +8,7 @@ public class Point {
     public Point (Double3 t){
         xyz = t;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Point){
