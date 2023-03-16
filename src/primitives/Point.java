@@ -15,6 +15,9 @@ public class Point {
         if (obj instanceof Point){
             return xyz.equals((Object)((Point)obj).xyz);
         }
+        else if (obj instanceof Vector) {
+            return xyz.equals((Object)((Vector)obj).xyz);
+        }
         return false;
     }
 
@@ -28,7 +31,18 @@ public class Point {
     public Vector subtract(Point a)
     {
         return (new Vector(xyz.subtract(v.xyz)));
+    }
 
+    public double distance(Point p)
+    {
+        return Math.sqrt(distanceSquared(p));
+    }
+
+    public double distanceSquared(Point p)
+    {
+        Double3 Sub = xyz.subtract(p.xyz);
+        Double3 Squared = Sub.product(Sub);
+        return (Squared.SumCoordinate());
     }
 
 }
