@@ -4,7 +4,7 @@ import primitives.Point;
 import primitives.Vector;
 
 public class Cylinder extends Tube {
-    private double height;
+    private final double height;
     public Cylinder(double t, Ray a ,double b){
         super(a,b);
         height=t;
