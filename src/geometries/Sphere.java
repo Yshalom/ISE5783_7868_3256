@@ -6,9 +6,9 @@ public class Sphere extends RadialGeometry {
     private final Point center;
     private final double radius;
     public Sphere (Point a,double b){
-        radius=b;
+        super(b);
+        radius = b;
         center =a;
-
     }
 
     public double getRadius() {
@@ -18,7 +18,9 @@ public class Sphere extends RadialGeometry {
     public Point getCenter() {
         return center;
     }
-    public Vector getNormal(Point a){
 
+    @Override
+    public Vector getNormal(Point p) {
+        return null;
     }
 }
