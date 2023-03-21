@@ -2,10 +2,28 @@ package geometries;
 
 import primitives.*;
 
+/**
+ * The Plane class represents a plane shape in 3D Cartesian coordinate system.
+ * It is defined by a point on the plane and a normal vector to the plane.
+ */
 public class Plane extends Geometry {
+
+    /**
+     * The point on the plane.
+     */
     private final Point q0;
+
+    /**
+     * The normal vector to the plane.
+     */
     private final Vector normal;
 
+    /**
+     * Constructs a plane object using three points on the plane.
+     * @param p1 A point on the plane.
+     * @param p2 A second point on the plane.
+     * @param p3 A third point on the plane.
+     */
     public Plane(Point p1, Point p2, Point p3)
     {
         q0 = p1;
@@ -16,23 +34,41 @@ public class Plane extends Geometry {
         Vector v3 =  v1.crossProduct(v2).normalize();
     }
 
+    /**
+     * Constructs a plane object using a point on the plane and a normal vector to the plane.
+     * @param p A point on the plane.
+     * @param v The normal vector to the plane.
+     */
     public Plane(Point p, Vector v)
     {
         q0 = p;
         normal = v.normalize();
     }
 
+    /**
+     * Gets the normal vector to the plane.
+     * @return The normal vector to the plane.
+     */
     public Vector getNormal()
     {
         return normal;
     }
 
+    /**
+     * Gets the normal vector to the plane at the specified point (which may not necessarily be on the plane).
+     * @param p The point to get the normal vector at.
+     * @return The normal vector to the plane at the specified point.
+     */
     @Override
     public Vector getNormal(Point p)
     {
         return normal;
     }
 
+    /**
+     * Gets the point on the plane.
+     * @return The point on the plane.
+     */
     public Point getQ0() {
         return q0;
     }
