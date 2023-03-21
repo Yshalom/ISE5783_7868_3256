@@ -18,7 +18,7 @@ public class Vector extends Point {
 
         // Throws an exception if the vector is the zero vector
         if (xyz.equals(Double3.ZERO)) {
-            throw new IllegalArgumentException("Cannot create a zero vector");
+            throw new IllegalArgumentException();
         }
     }
 
@@ -32,7 +32,7 @@ public class Vector extends Point {
 
         // Throws an exception if the vector is the zero vector
         if (xyz.equals(Double3.ZERO)) {
-            throw new IllegalArgumentException("Cannot create a zero vector");
+            throw new IllegalArgumentException();
         }
     }
 

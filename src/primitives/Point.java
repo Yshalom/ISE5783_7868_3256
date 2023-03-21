@@ -90,9 +90,9 @@ public class Point {
      * @return the square of the Euclidean distance between this point and the given point
      */
     public double distanceSquared(Point p) {
-        Double3 Sub = xyz.subtract(p.xyz);
-        Double3 Squared = Sub.product(Sub);
-        return (Squared.d1 + Squared.d2 + Squared.d3);
+        double d1 = xyz.d1 - p.xyz.d1;
+        double d2 = xyz.d2 - p.xyz.d2;
+        double d3 = xyz.d3 - p.xyz.d3;
+        return (d1 * d1 + d2 * d2 + d3 * d3);
     }
 }
-
