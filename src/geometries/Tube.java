@@ -6,4 +6,9 @@ public class Tube extends RadialGeometry {
         super(b);
         axiRay=a;
     }
+
+    @Override
+    public Vector getNormal(Point p) {
+        return null;
+    }
 }
