@@ -1,7 +1,5 @@
 package primitives;
 
-import jdk.incubator.vector.VectorOperators;
-
 public class Vector extends Point {
 
     public Vector(double x,double y,double z){

@@ -5,4 +5,8 @@ package geometries;
    public RadialGeometry(double a){
        radius=a;
    }
-}
+
+     public double getRadius() {
+         return radius;
+     }
+ }

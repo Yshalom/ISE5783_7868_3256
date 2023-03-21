@@ -33,4 +33,7 @@ public class Plane extends Geometry {
         return normal;
     }
 
+    public Point getQ0() {
+        return q0;
+    }
 }
