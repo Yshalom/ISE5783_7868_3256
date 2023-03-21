@@ -5,7 +5,7 @@ public class Point {
     public Point(double x,double y,double z){
         xyz = new Double3(x,y,z);
     }
-    public Point (Double3 t){
+    Point (Double3 t){
         xyz = t;
     }
 

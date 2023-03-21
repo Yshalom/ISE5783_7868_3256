@@ -22,5 +22,12 @@ public class Ray
         String s = "p0=" + p0.toString() + ", dir=" + dir.toString();
         return s;
     }
-}
 
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+}

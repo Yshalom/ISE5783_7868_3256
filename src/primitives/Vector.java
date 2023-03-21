@@ -10,7 +10,7 @@ public class Vector extends Point {
             throw new IllegalArgumentException();
         }
     }
-    public Vector (Double3 t){
+    Vector (Double3 t){
         super(t);
         if (xyz.equals(Double3.ZERO)) {
             throw new IllegalArgumentException();
