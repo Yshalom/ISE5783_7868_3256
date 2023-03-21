@@ -1,7 +1,7 @@
 package primitives;
 
 public class Point {
-    protected final Double3 xyz;
+    final Double3 xyz;
     public Point(double x,double y,double z){
         xyz = new Double3(x,y,z);
     }
@@ -22,11 +22,11 @@ public class Point {
         return xyz.toString();
     }
     public Point add(Vector v){
-        return new Point(xyz.add(v.xyz));
+        return new Point(xyz.d1 + v.xyz.d1, xyz.d2 + v.xyz.d2, xyz.d3 + v.xyz.d3);
     }
     public Vector subtract(Point a)
     {
-        return (new Vector(xyz.subtract(a.xyz)));
+        return (new Vector(xyz.d1 - a.xyz.d1, xyz.d2 - a.xyz.d2, xyz.d3 - a.xyz.d3));
     }
 
     public double distance(Point p)

@@ -36,7 +36,7 @@ public class Vector extends Point {
     }
 
     public Vector scale(double d){
-        return new Vector(xyz.scale(d));
+        return new Vector(xyz.d1 * d, xyz.d2 * d, xyz.d3 * d);
     }
 
     public double dotProduct(Vector v){
@@ -51,7 +51,7 @@ public class Vector extends Point {
 
     public double lengthSquared()
     {
-        return xyz.d1 * 2 + xyz.d2 * 2 + xyz.d3 * 2;
+        return xyz.d1 * xyz.d1 + xyz.d2 * xyz.d2 + xyz.d3 * xyz.d3;
     }
 
     public double length()
@@ -61,7 +61,8 @@ public class Vector extends Point {
 
     public Vector normalize()
     {
-        return new Vector(xyz.reduce(length()));
+        double len = length();
+        return new Vector(xyz.d1 / len, xyz.d2 / len, xyz.d3 / len);
     }
 
 }
