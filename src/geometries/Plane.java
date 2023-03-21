@@ -13,7 +13,7 @@ public class Plane extends Geometry {
 
         Vector v1 = p2.subtract(p1);
         Vector v2 = p3.subtract(p1);
-        Vector v3 =  v1.corssProduct(v2).normalize();
+        Vector v3 =  v1.crossProduct(v2).normalize();
     }
 
     public Plane(Point p, Vector v)

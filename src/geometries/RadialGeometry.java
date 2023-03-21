@@ -1,8 +1,8 @@
 package geometries;
 
- abstract public class RadialGeometry {
-   protected double final radius;
-   public abstract RadialGeometry(double a){
-       radiud=a;
+ abstract public class RadialGeometry extends Geometry {
+   protected final double radius;
+   public RadialGeometry(double a){
+       radius=a;
    }
 }

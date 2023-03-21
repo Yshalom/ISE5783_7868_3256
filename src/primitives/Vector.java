@@ -43,7 +43,7 @@ public class Vector extends Point {
         return (v.xyz.d1 * xyz.d1 + v.xyz.d2 * xyz.d2 + v.xyz.d3 * xyz.d3);
     }
 
-    public Vector corssProduct(Vector v) {
+    public Vector crossProduct(Vector v) {
         Double3 A = xyz;
         Double3 B = v.xyz;
         return new Vector(A.d2*B.d3-A.d3*B.d2, A.d3*B.d1-B.d3*A.d1, A.d1*B.d2-A.d2*B.d1);
