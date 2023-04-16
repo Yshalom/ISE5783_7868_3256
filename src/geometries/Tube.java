@@ -31,6 +31,8 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        double t = axiRay.getDir().dotProduct(p.subtract(axiRay.getP0()));
+        Point O = axiRay.getP0().add(axiRay.getDir().scale(t));
+        return p.subtract(O).normalize();
     }
 }
