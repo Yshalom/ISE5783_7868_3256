@@ -1,6 +1,8 @@
 package geometries;
 
 import primitives.*;
+import static primitives.Util.isZero;
+
 
 /**
  * The Plane class represents a plane shape in 3D Cartesian coordinate system.
@@ -26,8 +28,12 @@ public class Plane extends Geometry {
      */
     public Plane(Point p1, Point p2, Point p3)
     {
+        if(p1.equals(p2)||p2.equals(p3)||p3.equals(p1))
+            throw new IllegalArgumentException();
+        if(isZero(p3.subtract(p2).dotProduct(p1.subtract(p2)) - p3.subtract(p2).length()* (p1.subtract(p2)).length()))
+            throw new IllegalArgumentException();
         q0 = p1;
-        normal = null;
+        normal =(p3.subtract(p2).crossProduct(p1.subtract(p2))).normalize();
 
         Vector v1 = p2.subtract(p1);
         Vector v2 = p3.subtract(p1);
