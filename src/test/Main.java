@@ -55,7 +55,8 @@ public final class Main {
         if (!isZero(v1.dotProduct(v2) + 28))
             out.println("ERROR: dotProduct() wrong value");
 
-        // test Cross-Product
+        // test
+
         try { // test zero vector
             v1.crossProduct(v2);
             out.println("ERROR: crossProduct() for parallel vectors does not throw an exception");
