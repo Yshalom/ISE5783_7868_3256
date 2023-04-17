@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VectorTests {
+public class  VectorTests {
 
     /**
      * This function checks the creating zero vector by three arguments which are contained zero.
@@ -55,6 +55,7 @@ public class VectorTests {
                 () -> assertTrue(v1.subtract(v2).equals(new Vector(3, 6, 9)))
         );
     }
+
 
     @Test
     @DisplayName("VectorTest - test Cross-Product")
