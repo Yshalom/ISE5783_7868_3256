@@ -32,9 +32,9 @@ public class PointTests {
     @DisplayName("PointTest -testSubtract")
     void testSubtract(){
         Point p1 = new Point(1,2,5);
-        Point v = new Point(3,4,5);
-        Point p2 = new Point(2,2, 0);
-        assertTrue(p1.subtract(v).equals(p2));
+        Point p2 = new Point(3,4,5);
+        Vector v = new Vector(-2,-2, 0);
+        assertTrue(p1.subtract(p2).equals(v));
     }
     /**
      * This function checks the testDistanceSquared function.
