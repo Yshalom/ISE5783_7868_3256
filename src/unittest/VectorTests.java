@@ -108,7 +108,7 @@ public class  VectorTests {
         // TC01: vector's scale function
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(-3, -6, -9);
-        assertTrue(v1.scale(3).equals(v2));
+        assertTrue(v1.scale(-3).equals(v2));
     }
 
     /**
