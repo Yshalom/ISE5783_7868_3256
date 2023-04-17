@@ -16,6 +16,8 @@ public class SphereTests {
     @Test
     @DisplayName("PlaneTest - EQ getNormal test")
     void normal() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Creating a sphere and checking the getNormal function - (Is the normal vector equals to the program's output?)
         Sphere sphere = new Sphere(new Point(2.5,1,-3), 3);
         // ensure there are no exceptions
         assertDoesNotThrow(() -> sphere.getNormal(new Point(4.776055460839629, 2.204445679436092, -1.460882673585333)), "");

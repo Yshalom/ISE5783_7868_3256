@@ -15,6 +15,7 @@ public class TriangleTests {
     @DisplayName("TriangleTest - EQ getNormal test")
     void normal() {
         // ============ Equivalence Partitions Tests ==============
+        // TC01: Creating a triangle and checking the getNormal function - (Is the normal vector's length equals 1? Is it perpendicular to the triangle?)
         Point[] pts =
                 { new Point(-1, 0, 2), new Point(2, -3, 0), new Point(0, 2, 0) };
         Triangle triangle = new Triangle(pts[0], pts[1], pts[2]);

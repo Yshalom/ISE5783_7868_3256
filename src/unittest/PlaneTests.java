@@ -15,6 +15,7 @@ public class PlaneTests {
     @DisplayName("PlaneTest - EQ getNormal test")
     void normal() {
         // ============ Equivalence Partitions Tests ==============
+        // TC01: Creating a plane and checking the getNormal function - (Is the normal vector's length equals 1? Is it perpendicular to the plan?)
         Point[] pts =
                 { new Point(-1, 0, 2), new Point(2, -3, 0), new Point(0, 2, 0) };
         Plane plane = new Plane(pts[0], pts[1], pts[2]);

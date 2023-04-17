@@ -30,10 +30,14 @@ public class Tube extends RadialGeometry {
         return axiRay;
     }
 
+    /**
+     * @param p A point on the tube's sereface
+     * @return The normal vector at the point
+     */
     @Override
     public Vector getNormal(Point p) {
         double t = axiRay.getDir().dotProduct(p.subtract(axiRay.getP0()));
-        if (isZero(t))
+        if (isZero(t)) // BVT - the direction vector and the vector from P0 to p are Perpendicular.
             return p.subtract(axiRay.getP0()).normalize();
         Point O = axiRay.getP0().add(axiRay.getDir().scale(t));
         return p.subtract(O).normalize();

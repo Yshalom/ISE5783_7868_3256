@@ -45,8 +45,9 @@ public class Vector extends Point {
      */
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) return true;
         if (obj instanceof Vector){
-            return xyz.equals((Object)((Vector)obj).xyz);
+            return super.equals(obj);
         }
         return false;
     }
