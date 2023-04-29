@@ -1,6 +1,10 @@
 package geometries;
 
 import primitives.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static primitives.Util.isZero;
 
 
@@ -77,5 +81,15 @@ public class Plane extends Geometry {
      */
     public Point getQ0() {
         return q0;
+    }
+    @Override
+    public List<Point> findIntersections(Ray ray)
+    {
+      double t= (getNormal().dotProduct((q0.subtract(ray.getP0()))))/(getNormal().dotProduct(ray.getDir()));
+      if (t<0)
+          return null;
+        List<Point> res = new ArrayList<>();
+        res.add((ray.getP0().add((ray.getDir()).scale(t))));
+      return res;
     }
 }
