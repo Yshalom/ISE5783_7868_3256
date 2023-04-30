@@ -32,7 +32,7 @@ public class SphereTests {
     }
 
     @Test
-    @DisplayName("SphereTest - testFindIntersections tests")
+    @DisplayName("SphereTests - testFindIntersections tests")
     void testFindIntersectionPoints()
     {
         // ============ Equivalence Partitions Tests ==============
