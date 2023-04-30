@@ -64,7 +64,8 @@ public class Sphere extends RadialGeometry {
     {
         double d = 0;
         double tm = 0;
-        if (!center.equals(ray.getP0())) {
+        if (!center.equals(ray.getP0())) // the ray's point is same as
+        {
             Vector u = center.subtract(ray.getP0());
             tm = u.dotProduct(ray.getDir());
             if (isZero(u.lengthSquared() - tm * tm))
