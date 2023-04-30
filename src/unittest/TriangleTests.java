@@ -46,6 +46,17 @@ public class TriangleTests {
         Ray ray = new Ray(new Point(7.74910570454464, -4.541844793493148, 2.639160875740266), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
         List<Point> intersections = triangle.findIntersections(ray);
         assertTrue(intersections.indexOf(new Point(-2.224595828420366, 1.53987188585355, 1.514034291301992)) != -1);
+        // TC02: The Point is outsid the triangle
+         triangle = new Triangle(new Point(0.6682243802337,-0.7973985774211,0), new Point(-2.657596452515,6.803092081770,0.000000000000), new Point(-6.445074776976,2.523196972302,0.000000000000);
+        //ray = new Ray(new Point(-5.423325956703,5.817981233214,3.818539921168), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
+        intersections = triangle.findIntersections(ray);
+        assertTrue(intersections == null);
+        // TC02: The Point is outsid the triangle
+        triangle = new Triangle(new Point(0.6682243802337,-0.7973985774211,0), new Point(-2.657596452515,6.803092081770,0.000000000000), new Point(-6.445074776976,2.523196972302,0.000000000000);
+        //ray = new Ray(new Point(-5.423325956703,5.817981233214,3.818539921168), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
+        intersections = triangle.findIntersections(ray);
+        assertTrue(intersections == null);
+
     }
 }
 
