@@ -89,7 +89,7 @@ public class Plane extends Geometry {
       if (t<0)
           return null;
         List<Point> res = new ArrayList<>();
-        res.add((ray.getP0().add((ray.getDir()).scale(t))));
+        res.add(ray.getPoint(t));
       return res;
     }
 }

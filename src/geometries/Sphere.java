@@ -83,9 +83,9 @@ public class Sphere extends RadialGeometry {
 
         List<Point> res = new ArrayList<>();
         if (t1 > 0 && !isZero(t1)) // there's intersection.
-            res.add(ray.getP0().add(ray.getDir().scale(t1)));
+            res.add(ray.getPoint(t1));
         if (t2 > 0 && !isZero(t2)) // there's intersection.
-            res.add(ray.getP0().add(ray.getDir().scale(t2)));
+            res.add(ray.getPoint(t2));
         return res;
     }
 }
