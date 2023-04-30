@@ -1,5 +1,8 @@
 package geometries;
 import primitives.*;
+
+import java.util.List;
+
 import static primitives.Util.isZero;
 /**
  * The Tube class represents a tube in 3D space.
@@ -41,5 +44,11 @@ public class Tube extends RadialGeometry {
             return p.subtract(axiRay.getP0()).normalize();
         Point O = axiRay.getP0().add(axiRay.getDir().scale(t));
         return p.subtract(O).normalize();
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray)
+    {
+        return null;
     }
 }
