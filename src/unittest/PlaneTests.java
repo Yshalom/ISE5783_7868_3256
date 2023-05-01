@@ -77,12 +77,18 @@ public class PlaneTests {
         assertTrue(intersections.indexOf(new Point(-0.8192477845502,1.882752226942,2.654527898248)) != -1);
 
         // TC07:One case of a ray that is neither parallel nor perpendicular to the plane but starts inside the plane.
-        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector((3.640248346358, -0.5047581041989, -2.654527898248)));
+        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector(3.640248346358, -0.5047581041989, -2.654527898248));
         intersections = p.findIntersections(ray);
         assertTrue(intersections==null);
 
         // TC07:One case of a ray that is neither parallel nor perpendicular to the plane but starts inside the plane.
-        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector((3.640248346358, -0.5047581041989, -2.654527898248)));
+        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector(3.640248346358, -0.5047581041989, -2.654527898248));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC08:A ray that is neither parallel nor perpendicular to the plane but starts inside the plane the beginning of the ray exactly at the reference point of the plain.
+        p=new Plane(new Point(-4.886694008111,6.664002303091,2.809429319336),new Point(1.869389043285,3.002123197918,2), new Point(3.393412078214,-2.397562130485,0.3405368871923));
+        ray=new Ray(new Point(-4.886694008111,6.664002303091,2.809429319336),new Vector(5.576542872830, -16.20648195813, -4.645225631563));
         intersections = p.findIntersections(ray);
         assertTrue(intersections==null);
     }
