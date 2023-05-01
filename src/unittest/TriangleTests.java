@@ -41,22 +41,35 @@ public class TriangleTests {
     {
         // ============ Equivalence Partitions Tests ==============
 
-        // TC01: The Point is in the triangle
-        Triangle triangle = new Triangle(new Point(-3.016442487399665, -4.815368353714334, 0), new Point(3.670876869139111, 2.961854754321699, 0), new Point(-3.794700379681267, 9.25261385710887, 4.171576868105575));
-        Ray ray = new Ray(new Point(7.74910570454464, -4.541844793493148, 2.639160875740266), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
+        // TC01: The Point is on the triangle
+        Triangle triangle = new Triangle(new Point(-1.582330077979341, -2.299323910595358, 1.277013326971096), new Point(1.322758940265583, 2.348914309294042, -0.4682382198894), new Point(-0.99627593058881, 2.765600530137782, 2.596593764841225));
+        Ray ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-4.496887943191137, 6.588838393550958, -0.332645803159163));
         List<Point> intersections = triangle.findIntersections(ray);
-        assertTrue(intersections.indexOf(new Point(-2.224595828420366, 1.53987188585355, 1.514034291301992)) != -1);
-        // TC02: The Point is outsid the triangle
-         triangle = new Triangle(new Point(0.6682243802337,-0.7973985774211,0), new Point(-2.657596452515,6.803092081770,0.000000000000), new Point(-6.445074776976,2.523196972302,0.000000000000);
-        //ray = new Ray(new Point(-5.423325956703,5.817981233214,3.818539921168), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
+        assertTrue(intersections.indexOf(new Point(-0.265691207964898, 0.971151199818517, 0.957414089174703)) != -1);
+        // TC02: The point is outside and against edge
+        ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-6.486436300419531, 3.472641383816587, 1.421799574118616));
         intersections = triangle.findIntersections(ray);
         assertTrue(intersections == null);
-        // TC02: The Point is outsid the triangle
-        triangle = new Triangle(new Point(0.6682243802337,-0.7973985774211,0), new Point(-2.657596452515,6.803092081770,0.000000000000), new Point(-6.445074776976,2.523196972302,0.000000000000);
-        //ray = new Ray(new Point(-5.423325956703,5.817981233214,3.818539921168), new Vector(-13.018119424015962, 7.93812746181392, -1.468565326016762));
+        // TC03: The point is outside the triangle and against vertex
+        ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-8.418056004665601, -2.781124346629511, -0.170595549723505));
         intersections = triangle.findIntersections(ray);
         assertTrue(intersections == null);
 
+        // ============ Equivalence Partitions Tests ==============
+        // TC04: The point is on edge
+        ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-1.794937791274396, 1.535410772220864, -0.309924741582222));
+        intersections = triangle.findIntersections(ray);
+        assertTrue(intersections == null);
+
+        // TC05: The point is in vertex
+        ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-8.454382502662167, 1.917170938896994, 0.214287838950896));
+        intersections = triangle.findIntersections(ray);
+        assertTrue(intersections == null);
+
+        // TC06: The point is on edge's continuation
+        ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-2.600716892646798, -0.923598515618852, 0.542599096836337));
+        intersections = triangle.findIntersections(ray);
+        assertTrue(intersections == null);
     }
 }
 

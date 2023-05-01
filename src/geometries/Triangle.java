@@ -28,8 +28,8 @@ public class Triangle extends Polygon {
         Vector v3 = ((Point)vertices.toArray()[2]).subtract(ray.getP0());
 
         Vector n1 = v1.crossProduct(v2);
-//        Vector n2 = v1.crossProduct(v2);
-//        Vector n3 = v1.crossProduct(v2);
+        Vector n2 = v2.crossProduct(v3);
+        Vector n3 = v3.crossProduct(v1);
 
         if (n1.dotProduct(ray.getDir()) < 0)
         {
