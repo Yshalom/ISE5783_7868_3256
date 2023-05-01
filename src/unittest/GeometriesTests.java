@@ -28,7 +28,7 @@ public class GeometriesTests {
         // TC02: All the geometries don't get intersected
         ray = new Ray(new Point(0.083132315458016, 8.29118968085811, 10.83194635064747), new Vector(0.63083430575638, -0.1134121108378, 5.83194635064747));
         intersections = GeometriesSet.findIntersections(ray);
-        assertEquals(intersections.size(), 0); // Two points with the sphere and one with the plane
+        assertEquals(intersections, null); // Two points with the sphere and one with the plane
 
 
         // TC03: only one geometry gets intersected
@@ -44,7 +44,7 @@ public class GeometriesTests {
         // TC05: GeometriesSet is empty
         GeometriesSet = new Geometries();
         intersections = GeometriesSet.findIntersections(ray);
-        assertEquals(intersections.size(), 0); // Two points with the sphere and one with the plane
+        assertEquals(intersections, null); // Two points with the sphere and one with the plane
     }
 
 

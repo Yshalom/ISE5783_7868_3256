@@ -23,9 +23,9 @@ public class Geometries extends Intersectable {
         this.geometries.addAll(Arrays.stream(geometries).toList());
     }
 
-    public void add(Intersectable... geomertries)
+    public void add(Intersectable... geometries)
     {
-        this.geometries.addAll(geometries.stream().toList());
+        this.geometries.addAll(Arrays.stream(geometries).toList());
     }
 
     /**
@@ -50,7 +50,7 @@ public class Geometries extends Intersectable {
                 res.addAll(intersections);
             } );
 
-        if (res.size() != 0)
+        if (res.size() == 0)
             return null;
         return res;
     }
