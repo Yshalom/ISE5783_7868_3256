@@ -57,7 +57,7 @@ public class PlaneTests {
         assertTrue(intersections==null);
 
         // TC04: A ray parallel to the plane is on of the plane.
-        ray=new Ray(new Point(2,1,1),new Vector(-0.2998429736477, -1.438328584111, 1.315056004158));
+        ray=new Ray(new Point(-0.1435166094206, 2.551221911069, 3.969754986966),new Vector(2.466228378238, 0.5491810578790, 3.641485201606));
         intersections = p.findIntersections(ray);
         assertTrue(intersections==null);
 
