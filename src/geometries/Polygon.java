@@ -96,6 +96,19 @@ public class Polygon extends Geometry {
     @Override
     public List<Point> findIntersections(Ray ray)
     {
-        return null;
+        List<Point> intersection = plane.findIntersections(ray);
+        if (intersection == null)
+            return  null;
+        Point intersectionPoint = intersection.get(0);
+
+        Vector[] n = new Vector[vertices.size()];
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            if (1==(vertices.size()-1))
+                n[i]= (vertices.get(0).subtract(vertices.get(i)).crossProduct(vertices.get(0).subtract(intersectionPoint)));
+            n[i]= (vertices.get(i).subtract(vertices.get(i-1)).crossProduct(vertices.get(i-1).subtract(intersectionPoint)));
+
+        }
+        for (int i=1;1<)
     }
 }
