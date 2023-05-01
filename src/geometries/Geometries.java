@@ -40,18 +40,16 @@ public class Geometries extends Intersectable {
             return null;
 
 
-        //It's impossible to not create a list object if it's not needed because a lambda function gets only final objects.
-        //** and using the forEach loop twice instead of once will take a lot of unneeded run time.
-        final List<Point> res = new LinkedList<>();
+        List<Point> res = null;
 
-        geometries.forEach( (i) -> {
-            List<Point> intersections = i.findIntersections(ray);
-            if (intersections != null)
+        for (Intersectable g : geometries) {
+            List<Point> intersections = g.findIntersections(ray);
+            if (intersections != null) {
+                if (res == null)
+                    res = new LinkedList<Point>();
                 res.addAll(intersections);
-            } );
-
-        if (res.size() == 0)
-            return null;
+            }
+        }
         return res;
     }
 }

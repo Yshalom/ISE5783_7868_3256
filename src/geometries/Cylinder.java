@@ -1,6 +1,8 @@
 package geometries;
 
 import primitives.*;
+import java.util.List;
+import static primitives.Util.isZero;
 
 /**
  * The Cylinder class represents a cylinder shape in 3D Cartesian coordinate system.
@@ -31,7 +33,22 @@ public class Cylinder extends Tube {
      */
     @Override
     public Vector getNormal(Point p) {
-        return null; // TODO: Implement this method.
+        //The point is on the base whom the cylinder's ray's point is on
+        if (p.equals(axiRay.getP0()) // p == p0
+                || isZero(p.subtract(axiRay.getP0()).dotProduct(axiRay.getDir())))
+            return axiRay.getDir().scale(-1);
+
+        //The point is on the base whom nat the cylinder's ray's point is on
+        if (p.equals(axiRay.getPoint(height)) // p == (p0 + height * v)
+                 || isZero(p.subtract(axiRay.getPoint(height)).dotProduct(axiRay.getDir())))
+            return axiRay.getDir();
+
+        return super.getNormal(p);
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 
     /**
