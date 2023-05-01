@@ -48,5 +48,44 @@ public class PlaneTests {
         ray=new Ray(new Point(2.000000000000,0.000000000000,3.161895862457),new Vector(3.274747811327, 3.900471083023, 0.2322749124949));
         intersections = p.findIntersections(ray);
         assertTrue(intersections==null);
+
+        // =============== Boundary Values Tests ==================
+
+        // TC03: A ray parallel to the plane is out of the plane.
+        ray=new Ray(new Point(2,1,1),new Vector(3.099702143682, -0.4619545964766, 3.870647610685));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC04: A ray parallel to the plane is on of the plane.
+        ray=new Ray(new Point(2,1,1),new Vector(-0.2998429736477, -1.438328584111, 1.315056004158));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC05:A ray perpendicular to the plane is initially inside the plane.
+        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector(4.587690655411, 2.098278277433, -3.423500818726));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC06:A ray perpendicular to the plane initially after in the plane.
+        ray=new Ray(new Point(-0.1912522330315, 2.169979401364, 2.185894887379),new Vector(4.587690655411, 2.098278277433, -3.423500818726));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC07:A ray perpendicular to a plane is initially perpendicular to the plane.
+        ray=new Ray(new Point(-2.073547940014, 1.309071269076, 3.590532073703),new Vector(4.587690655411, 2.098278277433, -3.423500818726));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections.indexOf(new Point(-0.8192477845502,1.882752226942,2.654527898248)) != -1);
+
+        // TC07:One case of a ray that is neither parallel nor perpendicular to the plane but starts inside the plane.
+        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector((3.640248346358, -0.5047581041989, -2.654527898248)));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
+
+        // TC07:One case of a ray that is neither parallel nor perpendicular to the plane but starts inside the plane.
+        ray=new Ray(new Point(-0.8192477845502, 1.882752226942, 2.654527898248),new Vector((3.640248346358, -0.5047581041989, -2.654527898248)));
+        intersections = p.findIntersections(ray);
+        assertTrue(intersections==null);
     }
+
+
 }
