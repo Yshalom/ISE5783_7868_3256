@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import geometries.*;
 import primitives.*;
 import renderer.Camera;
-
 import java.util.List;
 
 public class IntegrationTests {
