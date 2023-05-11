@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * This class represents a ray in 3D space, defined by a starting point (p0) and a direction vector (dir).
  */
@@ -66,5 +68,24 @@ public class Ray
     public Point getPoint(double t)
     {
         return p0.add(dir.scale(t));
+    }
+    public Point findClosestPoint(List<Point> l)
+    {
+        if(l==null || l.size() == 0)
+            return null;
+        double Min = l.get(0).distanceSquared(p0);
+        int index = 0;
+
+        for (int i = 0; i < l.size(); i++)
+        {
+            double Distance = l.get(i).distanceSquared(p0);
+            if (Min > Distance)
+            {
+                index = i;
+                Min = Distance;
+            }
+        }
+
+        return l.get(index);
     }
 }
