@@ -102,15 +102,19 @@ public class Polygon extends Geometry {
         Point intersectionPoint = intersection.get(0);
 
         Vector[] n = new Vector[vertices.size()];
-        for (int i = 0; i < vertices.size(); i++)
-        {
-            if (1==(vertices.size()-1))
-                n[i]= (vertices.get(0).subtract(vertices.get(i)).crossProduct(vertices.get(0).subtract(intersectionPoint)));
-            n[i]= (vertices.get(i).subtract(vertices.get(i-1)).crossProduct(vertices.get(i-1).subtract(intersectionPoint)));
 
-        }
-        return null;
-        //for (int i=1;1<)
+        Point[] P = new Point[vertices.size()]; vertices.toArray(P);// For run-time
+        try {
+            for (int i = 0; i < n.length; i++) {
+                n[i] = P[(i + 1) % n.length].subtract(P[i]).crossProduct(P[i].subtract(intersectionPoint));
+            }}
+        catch (IllegalArgumentException e) { // There are Zero Vector -> no intersections.
+                return null; }
 
+        for (int i = 1; i < n.length; i++)
+            if (!isZero(n[i].dotProduct(n[0]) - n[i].length()*n[0].length()))
+                return null;
+
+        return intersection;
     }
 }

@@ -34,4 +34,11 @@ public class TubeTests {
         // ensure result
         assertTrue(new Vector(0.032174472604389, -0.836536287714123, 0.546966034274619).equals(result));
     }
+
+    @Test
+    @DisplayName("TubeTests - testFindIntersections tests")
+    void testFindIntersectionPoints()
+    {
+        
+    }
 }
