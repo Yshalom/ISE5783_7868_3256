@@ -23,10 +23,7 @@ public class RayTracerBasic extends RayTracerBase {
             return scene.background;
 
         // Take the closest point
-        Point p = list.get(0);
-        for (int i = 1; i < list.size(); i++)
-            if (ray.getP0().distanceSquared(list.get(i)) < ray.getP0().distanceSquared(p))
-                p = list.get(i);
+        Point p = ray.findClosestPoint(list);
 
         return calcColor(p);
     }
