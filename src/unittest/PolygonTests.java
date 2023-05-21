@@ -1,15 +1,12 @@
 package unittest;
 
+import primitives.*;
+import geometries.*;
+import static primitives.Util.isZero;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
-import geometries.*;
-import primitives.*;
-
-import java.util.List;
-
-import static primitives.Util.isZero;
-
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 /** Testing Polygons
  * @author Dan */

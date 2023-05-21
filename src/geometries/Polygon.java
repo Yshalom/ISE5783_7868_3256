@@ -116,5 +116,7 @@ public class Polygon extends Geometry {
                 return null;
 
         return intersection;
+
     }
+
 }
