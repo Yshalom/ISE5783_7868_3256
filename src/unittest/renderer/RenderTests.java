@@ -20,7 +20,7 @@ public class RenderTests {
     @Test
     public void basicRenderTwoColorTest() {
         Scene scene = new Scene("Test scene")//
-                .setAmbientLight(new AmbientLight(new Color(255, 191, 191), //
+                .setAmbientLight(new AmbientLight(new Color(100, 191, 191), //
                         new Double3(1, 1, 1))) //
                 .setBackground(new Color(75, 127, 90));
 
