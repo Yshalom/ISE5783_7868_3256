@@ -90,11 +90,17 @@ public class Camera {
         double Rx=width/nX;
         double yi=-(i-(nY-1)/2.0)*Ry;
         double xj=(j-(nX-1)/2.0)*Rx;
-        Point pij = pc;
-        if (xj != 0)
-            pij = pc.add(vRight.scale(xj));
-        if ( yi != 0)
+        Point pij;
+        if (isZero(yi)) { // yi == 0
+            if (isZero(xj)) // yi == 0 && xj == 0
+                pij = pc;
+            else
+                pij = pc.add(vRight.scale(xj));
+        }
+        else if (isZero(xj)) // xj == 0
             pij = pc.add(vUp.scale(yi));
+        else
+            pij=pc.add(vRight.scale(xj).add(vUp.scale(yi)));
 
         return new Ray(p0,pij.subtract(p0));
     }

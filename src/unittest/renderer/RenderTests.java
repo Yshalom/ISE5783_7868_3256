@@ -2,7 +2,6 @@ package unittest.renderer;
 
 import static java.awt.Color.YELLOW;
 
-import geometries.Intersectable;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -20,7 +19,6 @@ public class RenderTests {
      * grid */
     @Test
     public void basicRenderTwoColorTest() {
-
         Scene scene = new Scene("Test scene")//
                 .setAmbientLight(new AmbientLight(new Color(100, 191, 191), //
                         new Double3(1, 1, 1))) //

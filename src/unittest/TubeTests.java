@@ -6,7 +6,6 @@ import static primitives.Util.isZero;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.List;
 
 public class TubeTests {
     /**

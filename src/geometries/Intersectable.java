@@ -8,17 +8,6 @@ import java.util.List;
  *the findIntersections fuction provides intersection points on the geometry interface;
  */
 public abstract class Intersectable {
-    public static class GeoPoint {
-        public Geometry geometry;
-        public Point point;
-
-        public GeoPoint(Geometry geometry, Point point) {
-            this.geometry = geometry;
-            this.point = point;
-        }
-    }
-
-
     /**
      * Gets a ray vector and returns intersection points.
      * @param ray a ray
