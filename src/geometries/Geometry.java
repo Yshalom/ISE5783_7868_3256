@@ -12,5 +12,10 @@ public abstract class Geometry extends Intersectable {
      * @param p The point on the surface of the geometry to get the normal vector at.
      * @return The normal vector to the geometry at the specified point.
      */
+    protected Color emission=Color.BLACK;
     public abstract Vector getNormal(Point p);
+
+    public Color getEmission() {
+        return emission;
+    }
 }
