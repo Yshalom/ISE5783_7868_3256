@@ -16,6 +16,11 @@ public class Point {
      * @param y the y-coordinate of the point
      * @param z the z-coordinate of the point
      */
+
+    /** Zero triad (0,0,0) */
+    public static final Point ZERO = new Point(0, 0, 0);
+
+
     public Point(double x, double y, double z) {
         xyz = new Double3(x, y, z);
     }

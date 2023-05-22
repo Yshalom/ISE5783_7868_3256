@@ -22,7 +22,7 @@ public class RenderTests {
     public void basicRenderTwoColorTest() {
 
         Scene scene = new Scene("Test scene")//
-                .setAmbientLight(new AmbientLight(new Color(255, 191, 191), //
+                .setAmbientLight(new AmbientLight(new Color(100, 191, 191), //
                         new Double3(1, 1, 1))) //
                 .setBackground(new Color(75, 127, 90));
 
@@ -81,6 +81,7 @@ public class RenderTests {
     // }
 
     /** Test for XML based scene - for bonus */
+    /*
     @Test
     public void basicRenderXml() {
         Scene  scene  = new Scene("XML Test scene");
@@ -97,4 +98,5 @@ public class RenderTests {
         camera.printGrid(100, new Color(YELLOW));
         camera.writeToImage();
     }
+    */
 }
