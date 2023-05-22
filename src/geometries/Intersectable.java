@@ -12,11 +12,12 @@ public abstract class Intersectable {
         public Geometry geometry;
         public Point point;
 
+        public GeoPoint(Geometry geometry, Point point) {
+            this.geometry = geometry;
+            this.point = point;
+        }
     }
-    public Intersectable(GeoPoint geometry,Point point)
-    {
 
-    }
 
     /**
      * Gets a ray vector and returns intersection points.
