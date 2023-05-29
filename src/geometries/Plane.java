@@ -82,8 +82,14 @@ public class Plane extends Geometry {
     public Point getQ0() {
         return q0;
     }
+
+    /**
+     * Gets a ray vector and returns intersection points by GeoPoint format.
+     * @param ray a ray
+     * @return List of intersection points by GeoPoint format (this, point).
+     */
     @Override
-    public List<Point> findIntersections(Ray ray)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
         if (isZero(normal.dotProduct(ray.getDir())))
             return null;
@@ -92,8 +98,8 @@ public class Plane extends Geometry {
         double t= (normal.dotProduct((q0.subtract(ray.getP0()))))/(normal.dotProduct(ray.getDir()));
         if (t<0|| isZero(t))
           return null;
-        List<Point> res = new ArrayList<>();
-        res.add(ray.getPoint(t));
+        List<GeoPoint> res = new ArrayList<>();
+        res.add(new GeoPoint(this, ray.getPoint(t)));
         return res;
     }
 }

@@ -107,8 +107,9 @@ public class Camera {
 
     /**
      * This function checks the correction of the camera.
+     * @return The function return the camera (by this).
      */
-    public void renderImage()
+    public Camera renderImage()
     {
         if (p0 == null || vUp == null || vTo == null || vRight == null || width == 0 || height == 0 || distance == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "");
@@ -117,7 +118,8 @@ public class Camera {
         int Ny = imageWriter.getNy();
         for (int i = 0; i < Nx; i++)
             for (int j = 0; j < Ny; j++)
-                imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+                    imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+        return this;
     }
 
     /**

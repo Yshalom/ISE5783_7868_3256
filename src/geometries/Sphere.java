@@ -55,12 +55,12 @@ public class Sphere extends RadialGeometry {
     }
 
     /**
-     * Gets a ray vector and returns intersection points.
+     * Gets a ray vector and returns intersection points by GeoPoint format.
      * @param ray a ray
-     * @return List of intersection points.
+     * @return List of intersection points by GeoPoint format (this, point).
      */
     @Override
-    public List<Point> findIntersections(Ray ray)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
         double d = 0;
         double tm = 0;
@@ -82,11 +82,11 @@ public class Sphere extends RadialGeometry {
         if ((t1 < 0 || isZero(t1)) && (t2 < 0 || isZero(t2)))
             return null; // there are no intersections.
 
-        List<Point> res = new ArrayList<>();
+        List<GeoPoint> res = new ArrayList<>();
         if (t1 > 0 && !isZero(t1)) // there's intersection.
-            res.add(ray.getPoint(t1));
+            res.add(new GeoPoint(this, ray.getPoint(t1)));
         if (t2 > 0 && !isZero(t2)) // there's intersection.
-            res.add(ray.getPoint(t2));
+            res.add(new GeoPoint(this, ray.getPoint(t2)));
         return res;
     }
 }

@@ -29,24 +29,23 @@ public class Geometries extends Intersectable {
     }
 
     /**
-     * Gets a ray vector and returns all the intersection points with all the geometries.
+     * Gets a ray vector and returns all the intersection points with all the geometries by GeoPoint format.
      * @param ray a ray
-     * @return List of intersection points.
+     * @return List of intersection points by GeoPoint format (this, point).
      */
     @Override
-    public List<Point> findIntersections(Ray ray)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
         if (geometries == null)
             return null;
 
-
-        List<Point> res = null;
+        List<GeoPoint> res = null;
 
         for (Intersectable g : geometries) {
-            List<Point> intersections = g.findIntersections(ray);
+            List<GeoPoint> intersections = g.findGeoIntersectionsHelper(ray);
             if (intersections != null) {
                 if (res == null)
-                    res = new LinkedList<Point>();
+                    res = new LinkedList<GeoPoint>();
                 res.addAll(intersections);
             }
         }

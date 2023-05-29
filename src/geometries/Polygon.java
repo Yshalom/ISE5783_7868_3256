@@ -2,6 +2,7 @@ package geometries;
 
 import static primitives.Util.isZero;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.Point;
@@ -93,13 +94,18 @@ public class Polygon extends Geometry {
         return size;
     }
 
+    /**
+     * Gets a ray vector and returns intersection points by GeoPoint format.
+     * @param ray a ray
+     * @return List of intersection points by GeoPoint format (this, point).
+     */
     @Override
-    public List<Point> findIntersections(Ray ray)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
-        List<Point> intersection = plane.findIntersections(ray);
+        List<GeoPoint> intersection = plane.findGeoIntersectionsHelper(ray);
         if (intersection == null)
             return  null;
-        Point intersectionPoint = intersection.get(0);
+        Point intersectionPoint = intersection.get(0).point;
 
         Vector[] n = new Vector[vertices.size()];
 
@@ -109,14 +115,14 @@ public class Polygon extends Geometry {
                 n[i] = P[(i + 1) % n.length].subtract(P[i]).crossProduct(P[i].subtract(intersectionPoint));
             }}
         catch (IllegalArgumentException e) { // There are Zero Vector -> no intersections.
-                return null; }
+            return null; }
 
         for (int i = 1; i < n.length; i++)
             if (!isZero(n[i].dotProduct(n[0]) - n[i].length()*n[0].length()))
                 return null;
 
-        return intersection;
-
+        List<GeoPoint> res = new ArrayList<>();
+        res.add(new GeoPoint(this, intersectionPoint));
+        return res;
     }
-
 }
