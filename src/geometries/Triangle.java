@@ -31,31 +31,39 @@ public class Triangle extends Polygon {
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
-        Vector v1 = vertices.get(0).subtract(ray.getP0());
-        Vector v2 = vertices.get(1).subtract(ray.getP0());
-        Vector v3 = vertices.get(2).subtract(ray.getP0());
-
-        Vector n1 = v1.crossProduct(v2);
-        Vector n2 = v2.crossProduct(v3);
-        Vector n3 = v3.crossProduct(v1);
-
-        // The point is on edge's continuation.
-        if (isZero(n1.dotProduct(ray.getDir())) || isZero(n2.dotProduct(ray.getDir())) || isZero(n3.dotProduct(ray.getDir())))
+        List<Point> Intersections = plane.findIntersections(ray);
+        if (Intersections == null)
             return null;
+        Point p0 = plane.findIntersections(ray).get(0);
+        if (vertices.contains(p0))
+            return null;
+        Vector v1 = vertices.get(0).subtract(p0);
+        Vector v2 = vertices.get(1).subtract(p0);
+        Vector v3 = vertices.get(2).subtract(p0);
 
-        if (n1.dotProduct(ray.getDir()) < 0)
-        {
-            if (n2.dotProduct(ray.getDir()) > 0 || n3.dotProduct(ray.getDir()) > 0)
+        try {
+            Vector n1 = v1.crossProduct(v2);
+            Vector n2 = v2.crossProduct(v3);
+            Vector n3 = v3.crossProduct(v1);
+
+            // The point is on edge's continuation.
+            if (isZero(n1.dotProduct(ray.getDir())) || isZero(n2.dotProduct(ray.getDir())) || isZero(n3.dotProduct(ray.getDir())))
                 return null;
+
+            if (n1.dotProduct(ray.getDir()) < 0) {
+                if (n2.dotProduct(ray.getDir()) > 0 || n3.dotProduct(ray.getDir()) > 0)
+                    return null;
+            }
+            if (n1.dotProduct(ray.getDir()) > 0) {
+                if (n2.dotProduct(ray.getDir()) < 0 || n3.dotProduct(ray.getDir()) < 0)
+                    return null;
+            }
         }
-        if (n1.dotProduct(ray.getDir()) > 0)
-        {
-            if (n2.dotProduct(ray.getDir()) < 0 || n3.dotProduct(ray.getDir()) < 0)
-                return null;
-        }
+        catch (Exception e)
+        {return null; }
 
         List<GeoPoint> res = new ArrayList<>();
-        res.add(new GeoPoint(this, plane.findGeoIntersectionsHelper(ray).get(0).point));
+        res.add(new GeoPoint(this, p0));
         return res;
     }
 }

@@ -39,30 +39,41 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint p, Ray ray)
     {
-        Color res = scene.ambientLight.getIntensity().add(p.geometry.getEmission()); // kA*IA + IE
+        return scene.ambientLight.getIntensity()
+                .add(calcLocalEffects(p, ray));
+    }
 
-        for (LightSource light : scene.lights)
-        {
-            Vector l = light.getL(p.point),
-                n = p.geometry.getNormal(p.point),
-                v = ray.getDir(),
-                r = l; // l and n are vertical
-            if (!isZero(l.dotProduct(n)))
-                r = l.add(n.scale(-2 * l.dotProduct(n)));
-
-
-            if (l.dotProduct(n) * v.dotProduct(n) > 0) // Are there shadow in this area? if yes it'll skip this code.
+    private Color calcLocalEffects(GeoPoint gp, Ray ray)
+    {
+        Color color = gp.geometry.getEmission();
+        Vector v = ray.getDir ();
+        Vector n = gp.geometry.getNormal(gp.point);
+        double nv = n.dotProduct(v);
+        if (isZero(nv))
+            return color;
+        Material material = gp.geometry.getMaterial();
+        for (LightSource lightSource : scene.lights) {
+            Vector l = lightSource.getL(gp.point);
+            double nl = n.dotProduct(l);
+            if (nl * nv > 0) // sign(nl) == sing(nv)
             {
-                Double3 DiffuseParameter = p.geometry.getMaterial().kD.scale(Math.abs(l.dotProduct(n))); // Kd * |l*n|
-                Double3 SpecularParameter = Double3.ZERO;
-                double VR = v.scale(-1).dotProduct(r);
-                if (VR > 0)
-                    SpecularParameter = p.geometry.getMaterial().ks.scale(Math.pow(VR, p.geometry.getMaterial().nShininess)); // ks * max(0, -v*r)^nsh
-
-                res = res.add(light.getIntensity(p.point).scale(DiffuseParameter.add(SpecularParameter))); // (Kd * |l*n| + ks * max(0, -v*r)^nsh)*Il
+                Color iL = lightSource.getIntensity(gp.point);
+                color = color.add(iL.scale(calcDiffusive(material, nl)),
+                        iL.scale(calcSpecular(material, n, l, nl, v)));
             }
         }
+        return color;
+    }
 
-        return res;
+    Double3 calcDiffusive(Material material, double nl)
+    {
+        return material.kD.scale(Math.abs(nl));
+    }
+    Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v)
+    {
+        Vector r = l.subtract(n.scale( 2 * (l.dotProduct(n))));
+        if (v.dotProduct(r) >= 0)
+            return Double3.ZERO;
+        return material.ks.scale(Math.pow(-v.dotProduct(r), material.nShininess));
     }
 }
