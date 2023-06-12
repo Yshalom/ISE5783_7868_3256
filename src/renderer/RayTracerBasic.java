@@ -83,7 +83,7 @@ public class RayTracerBasic extends RayTracerBase {
     private boolean unshaded(GeoPoint gp, Vector l, Vector n, Vector v, double nl, LightSource LS){
         Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
         Ray ray = new Ray(gp.point.add(epsVector),l.scale(-1));
-        List<GeoPoint> list = scene.geometries.findGeoIntersections(ray);
+        List<GeoPoint> list = scene.geometries.findGeoIntersections(ray, LS.getDistance(gp.point));
         if (list == null)
             return true;
         return false;
