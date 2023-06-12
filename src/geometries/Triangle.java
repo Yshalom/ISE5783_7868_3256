@@ -29,12 +29,14 @@ public class Triangle extends Polygon {
      * @return List of intersection points by GeoPoint format (this, point).
      */
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance)
     {
         List<Point> Intersections = plane.findIntersections(ray);
         if (Intersections == null)
             return null;
         Point p0 = plane.findIntersections(ray).get(0);
+        if (ray.getP0().distance(p0) > maxDistance || isZero(ray.getP0().distance(p0) - maxDistance))
+            return null;
         if (vertices.contains(p0))
             return null;
         Vector v1 = vertices.get(0).subtract(p0);

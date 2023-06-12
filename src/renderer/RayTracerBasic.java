@@ -9,6 +9,8 @@ import static primitives.Util.isZero;
 import geometries.Intersectable.GeoPoint;
 
 public class RayTracerBasic extends RayTracerBase {
+    private static final double DELTA = 0.1;
+
     public RayTracerBasic(Scene scene)
     {
         super(scene);
@@ -57,9 +59,11 @@ public class RayTracerBasic extends RayTracerBase {
             double nl = n.dotProduct(l);
             if (nl * nv > 0) // sign(nl) == sing(nv)
             {
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+                if (unshaded(gp, l, n, v, nl, lightSource)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)),
+                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
         return color;
@@ -75,5 +79,13 @@ public class RayTracerBasic extends RayTracerBase {
         if (v.dotProduct(r) >= 0)
             return Double3.ZERO;
         return material.ks.scale(Math.pow(-v.dotProduct(r), material.nShininess));
+    }
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, Vector v, double nl, LightSource LS){
+        Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
+        Ray ray = new Ray(gp.point.add(epsVector),l.scale(-1));
+        List<GeoPoint> list = scene.geometries.findGeoIntersections(ray);
+        if (list == null)
+            return true;
+        return false;
     }
 }
