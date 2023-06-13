@@ -79,13 +79,13 @@ public class Sphere extends RadialGeometry {
         double t1 = tm - th;
         double t2 = tm + th;
 
-        if ((t1 < 0 || isZero(t1)) && (t2 < 0 || isZero(t2)))
+        if (!(t1 > 0 && !isZero(t1) && !isZero(t1 - maxDistance) && t1 < maxDistance) && !(t2 > 0 && !isZero(t2) && !isZero(t2 - maxDistance) && t2 < maxDistance))
             return null; // there are no intersections.
 
         List<GeoPoint> res = new ArrayList<>();
-        if (t1 > 0 && !isZero(t1) || isZero(t1 - maxDistance) || t1 > maxDistance) // there's intersection.
+        if (t1 > 0 && !isZero(t1) && !isZero(t1 - maxDistance) && t1 < maxDistance) // there's intersection.
             res.add(new GeoPoint(this, ray.getPoint(t1)));
-        if (t2 > 0 && !isZero(t2) || isZero(t2 - maxDistance) || t2 > maxDistance) // there's intersection.
+        if (t2 > 0 && !isZero(t2) && !isZero(t2 - maxDistance) && t2 < maxDistance) // there's intersection.
             res.add(new GeoPoint(this, ray.getPoint(t2)));
         return res;
     }
