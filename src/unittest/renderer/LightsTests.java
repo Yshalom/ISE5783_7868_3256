@@ -191,45 +191,6 @@ public class LightsTests {
               .writeToImage(); //
    }
 
-   @Test
-   public void Picture1() {
-      Scene scene3 = new Scene("Picture1");
-      Sphere sphere1 = new Sphere(new Point(50, -50, -110), 40);
-      sphere1.setEmission(new Color(0, 0, 20));
-      sphere1.setMaterial(new Material().setKd(new Double3(0.1,0.1,0.45)).setKs(new Double3(0.7,0.7,0.9)).setShininess(300));
-      Sphere sphere2 = new Sphere(new Point(0, -130, -130), 20);
-      sphere2.setEmission(new Color(30, 40, 20));
-      sphere2.setMaterial(new Material().setKd(new Double3(0.4,0.4,0.2)).setKs(new Double3(0.1,0.1,0.1)).setShininess(8));
-      Plane plane1 = new Plane(vertices[0], vertices[1], vertices[2]);
-      plane1.setMaterial(material);
-      Plane plane2 = new Plane(vertices[0], vertices[1], vertices[3]);
-      plane2.setMaterial(material);
-
-      scene3.geometries.add(plane1, plane2, sphere1, sphere2);
-
-      scene3.setAmbientLight(new AmbientLight(new Color(30, 30, 30), Double3.ONE));
-      scene3.lights.add(new DirectionalLight(new Color(200, 150, 80), new Vector(1, 1, -1)));
-      //PointLight pointLight1 = new PointLight(new Color(800, 600, 0), new Point(-3, -60, -100));
-      //pointLight1.setKc(0.8).setKl(0.01).setKq(0.0005);
-      //scene3.lights.add(pointLight1);
-      //PointLight pointLight2 = new PointLight(new Color(450, 450, 600), new Point(10, 20, -50));
-      //pointLight2.setKc(0.65).setKl(0.004).setKq(0.0006);
-      //scene3.lights.add(pointLight2);
-      double M = 1000000;
-      SpotLight spotLight = new SpotLight(new Color(M*400, M*400, M*400), new Point(130,-170,-30), new Vector(-5,5,-4));
-      spotLight.setKc(M).setKl(50).setKq(2);
-      scene3.lights.add(spotLight);
-
-      ImageWriter imageWriter = new ImageWriter("Picture1", 1000, 1000);
-      Camera         camera3                 = new Camera(new Point(0, -1000, 600),
-              new Vector(0, 1.3, -1), new Vector(0, 1, 1.3))
-              .setVPSize(200, 200).setVPDistance(1000);
-      camera3.setImageWriter(imageWriter) //
-              .setRayTracer(new RayTracerBasic(scene3)) //
-              .renderImage() //
-              .writeToImage(); //
-   }
-
 
    /** Produce a picture of a sphere lighted by a narrow spotlight */
    /*

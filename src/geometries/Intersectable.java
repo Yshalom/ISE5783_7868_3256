@@ -77,4 +77,16 @@ public abstract class Intersectable {
 
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
+    /**
+     * Find the closest point to the ray's head.
+     * @param ray The ray to run the function on.
+     * @return The closest point which was found by GeoPoint format (geometry, point).
+     */
+    public GeoPoint findClosestIntersection(Ray ray)
+    {
+        List<GeoPoint> list = findGeoIntersections(ray);
+        if (list == null)
+            return null;
+        return ray.findClosestGeoPoint(list);
+    }
 }

@@ -5,11 +5,13 @@ import java.util.List;
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
 
+
 /**
  * This class represents a ray in 3D space, defined by a starting point (p0) and a direction vector (dir).
  */
 public class Ray
 {
+    private static final double DELTA = 0.1;
     private final Point p0; // The starting point of the ray
     private final Vector dir; // The direction vector of the ray (normalized)
 
@@ -107,5 +109,19 @@ public class Ray
         }
 
         return l.get(index);
+    }
+
+    /***
+     * This function is a constructor function to the Ray class,
+     * but the new ray is moved forward in a DELTA parallel with the normal vector.
+     * @param head A point that will be used as the head point of the new ray.
+     * @param direction A vector that will be used as the direction vector of the new ray.
+     * @param normal Another vector that will determine the direction of the ray's head movement.
+     */
+    public Ray(Point head, Vector direction, Vector normal)
+    {
+        Vector epsVector = normal.scale(normal.dotProduct(direction) < 0 ? -DELTA : DELTA);
+         p0 = head.add(epsVector);
+         dir = direction;
     }
 }
