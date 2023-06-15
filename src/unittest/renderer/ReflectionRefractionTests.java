@@ -121,7 +121,7 @@ public class ReflectionRefractionTests {
 
       Sphere sphere3 = new Sphere(new Point(60, -180, -104), 45);
       sphere3.setEmission(new Color(0, 0, 0));
-      sphere3.setMaterial(new Material().setKd(new Double3(0.05,0.05,0.1)).setKs(new Double3(0.9)).setShininess(1000).setKt(0.85).setSnellParameter(10));
+      sphere3.setMaterial(new Material().setKd(new Double3(0.05,0.05,0.1)).setKs(new Double3(0.9)).setShininess(1000).setKt(0.85).setSnellParameter(15));
 
       Material material = new Material().setKd(new Double3(0.25, 0.25, 0.2)).setKs(new Double3(0.2, 0.4, 0.3)).setShininess(301).setKr(0.3);
       Plane plane1 = new Plane(new Point(-110, -110, -150), new Point(95, 100, -150), new Point(110, -110, -150));
@@ -144,7 +144,7 @@ public class ReflectionRefractionTests {
       spotLight.setKc(M).setKl(50).setKq(2);
       scene3.lights.add(spotLight);
 
-      ImageWriter imageWriter = new ImageWriter("Picture1", 700, 700);
+      ImageWriter imageWriter = new ImageWriter("Picture1", 1500, 1500);
       Camera         camera3                 = new Camera(new Point(0, -1000, 600),
               new Vector(0, 1.3, -1), new Vector(0, 1, 1.3))
               .setVPSize(200, 200).setVPDistance(1000);
