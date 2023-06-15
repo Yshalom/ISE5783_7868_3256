@@ -117,11 +117,11 @@ public class ReflectionRefractionTests {
 
       Sphere sphere2 = new Sphere(new Point(0, -130, -130), 20);
       sphere2.setEmission(new Color(30, 40, 20));
-      sphere2.setMaterial(new Material().setKd(new Double3(0.4,0.4,0.2)).setKs(new Double3(0.1,0.1,0.1)).setShininess(8));
+      sphere2.setMaterial(new Material().setKd(new Double3(0.4,0.4,0.2)).setKs(new Double3(0.1)).setShininess(8));
 
-      Sphere sphere3 = new Sphere(new Point(60, -180, -116), 45);
-      sphere3.setEmission(new Color(5, 15, 15));
-      sphere3.setMaterial(new Material().setKd(new Double3(0.05,0.05,0.1)).setKs(new Double3(0.9,0.9,0.9)).setShininess(1000).setKt(0.85).setSnellParameter(10));
+      Sphere sphere3 = new Sphere(new Point(60, -180, -104), 45);
+      sphere3.setEmission(new Color(0, 0, 0));
+      sphere3.setMaterial(new Material().setKd(new Double3(0.05,0.05,0.1)).setKs(new Double3(0.9)).setShininess(1000).setKt(0.85).setSnellParameter(10));
 
       Material material = new Material().setKd(new Double3(0.25, 0.25, 0.2)).setKs(new Double3(0.2, 0.4, 0.3)).setShininess(301).setKr(0.3);
       Plane plane1 = new Plane(new Point(-110, -110, -150), new Point(95, 100, -150), new Point(110, -110, -150));
@@ -144,13 +144,13 @@ public class ReflectionRefractionTests {
       spotLight.setKc(M).setKl(50).setKq(2);
       scene3.lights.add(spotLight);
 
-      ImageWriter imageWriter = new ImageWriter("Picture1", 1000, 1000);
+      ImageWriter imageWriter = new ImageWriter("Picture1", 700, 700);
       Camera         camera3                 = new Camera(new Point(0, -1000, 600),
               new Vector(0, 1.3, -1), new Vector(0, 1, 1.3))
               .setVPSize(200, 200).setVPDistance(1000);
-      camera3.setImageWriter(imageWriter) //
-              .setRayTracer(new RayTracerBasic(scene3)) //
-              .renderImage() //
-              .writeToImage(); //
+      camera3.setImageWriter(imageWriter)
+              .setRayTracer(new RayTracerBasic(scene3))
+              .renderImage()
+              .writeToImage();
    }
 }
