@@ -6,4 +6,3 @@ This project creates 3D-Images of a given scene by calculating the light's path 
 In the below pictures, there are several images that were calculated by the program.
 
 <img src="3D image 1.png"></img>
-<img src="3D image  1.png"></img>
