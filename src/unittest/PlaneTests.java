@@ -93,5 +93,20 @@ public class PlaneTests {
         assertTrue(intersections==null);
     }
 
+    @Test
+    @DisplayName("PlaneTest -  testFindIntersections with distance test")
+    void testFindIntersectionWithDistance()
+    {
+        // TC01: There is intersection point
+        Plane p=new Plane(new Point(-4.138806049343,5.683421073213,0.5355724968185),new Point(-4.878757880743,4.170256527275,-1.383431104219), new Point(1.871275564824,-2.601144353237,3.511786649171));
+        Ray ray=new Ray(new Point(-8.852193208605,-4.015001985440,-0.3743721971615),new Vector(15.33690201582, 8.669882352719, 1.818379243356));
+        List<Intersectable.GeoPoint> intersections = p.findGeoIntersections(ray, 10);
+        assertTrue(intersections.size() == 1);
+
+        // TC02: There are no intersection points
+        intersections = p.findGeoIntersections(ray, 5);
+        assertTrue(intersections == null);
+    }
+
 
 }

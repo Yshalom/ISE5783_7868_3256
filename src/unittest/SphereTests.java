@@ -130,4 +130,23 @@ public class SphereTests {
         intersections = sphere.findIntersections(ray);
         assertTrue(intersections == null);
     }
+
+    @Test
+    @DisplayName("SphereTest -  testFindIntersections with distance test")
+    void testFindIntersectionWithDistance()
+    {
+        // TC01: There are two intersection points
+        Sphere sphere = new Sphere(new Point(-3.4, 3.5, 2), 2.3);
+        Ray ray = new Ray(new Point(-2.1, 0.6, 1.2), new Vector(0.5, 9.5, 1.1));
+        List<Intersectable.GeoPoint> intersections = sphere.findGeoIntersections(ray, 10);
+        assertTrue(intersections.size() == 2);
+
+        // TC02: There is one intersection point
+        intersections = sphere.findGeoIntersections(ray, 3);
+        assertTrue(intersections.size() == 1);
+
+        // TC03: There are no intersection points
+        intersections = sphere.findGeoIntersections(ray, 1);
+        assertTrue(intersections==null);
+    }
 }

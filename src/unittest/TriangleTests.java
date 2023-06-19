@@ -71,6 +71,20 @@ public class TriangleTests {
         intersections = triangle.findIntersections(ray);
         assertTrue(intersections == null);
     }
+    @Test
+    @DisplayName("SphereTest -  testFindIntersections with distance test")
+    void testFindIntersectionWithDistance()
+    {
+        // TC01: There is one intersection point
+        Triangle triangle = new Triangle(new Point(-1.582330077979341, -2.299323910595358, 1.277013326971096), new Point(1.322758940265583, 2.348914309294042, -0.4682382198894), new Point(-0.99627593058881, 2.765600530137782, 2.596593764841225));
+        Ray ray = new Ray(new Point(2.616212398061027, -3.251412796833307, 1.170595549723505), new Vector(-4.496887943191137, 6.588838393550958, -0.332645803159163));
+        List<Intersectable.GeoPoint> intersections = triangle.findGeoIntersections(ray, 10);
+        assertTrue(intersections.size()==1);
+
+        // TC02: There are no intersection point
+        intersections = triangle.findGeoIntersections(ray, 1);
+        assertTrue(intersections==null);
+    }
 }
 
 

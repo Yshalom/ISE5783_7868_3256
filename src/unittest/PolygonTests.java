@@ -122,4 +122,19 @@ public class PolygonTests {
         intersections = polygon.findIntersections(ray);
         assertTrue(intersections == null);
     }
+
+    @Test
+    @DisplayName("PolygonTest -  testFindIntersections with distance test")
+    void testFindIntersectionWithDistance()
+    {
+        // TC01: The Point is on the polygon (Polygon with 4 edges) - There is intersection point
+        Polygon polygon = new Polygon(new Point(1.786886601630041, 3.688343322358688, 3.081792689896019), new Point(3.664549372173367, -1.054594469892957, 2.942484583345969), new Point(0.360395308419861, -6.768194294581608, 0.751378991088025), new Point(-3.454678696879648, -1.926369927440817, 0.20356790573192));
+        Ray ray = new Ray(new Point(-4.684003061182324, -8.525873938258528, 3.414684282421515), new Vector(1.623218982453868, 1.992605164185262, -0.824241142412184));
+        List<Intersectable.GeoPoint> intersections = polygon.findGeoIntersections(ray, 10);
+        assertTrue(intersections.size() == 1);
+
+        // TC02: There are no intersection points
+        intersections = polygon.findGeoIntersections(ray, 5);
+        assertTrue(intersections == null);
+    }
 }
