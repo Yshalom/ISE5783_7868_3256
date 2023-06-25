@@ -35,7 +35,7 @@ public class PictureImprovements {
                 forward=new Plane(p4,p4.subtract(p2),p4.subtract(p3));
 
         Material wallMaterial = new Material().setKd(0.9);
-        Material floorMaterial = new Material().setKs(0.3).setShininess(20).setKd(new Double3(0.4, 0.4, 0.35)).setKt(0);
+        Material floorMaterial = new Material().setKs(0.3).setShininess(20).setKd(new Double3(0.4, 0.4, 0.35)).setKr(0.1);
 
         Color WallEmission = new Color(30, 30, 25);
         left.setMaterial(wallMaterial).setEmission(WallEmission);
@@ -96,30 +96,48 @@ public class PictureImprovements {
                 new Point(130, 161, 295));
         lamp2.setEmission(new Color(190, 230, 255));
 
-        Point[] points = new Point[] {
+        // Mirror
+        Polygon mirror = new Polygon(
+                new Point(10, -199, 50),
+                new Point(10, -199, 250),
+                new Point(80, -199, 250),
+                new Point(80, -199, 50)
+        );
+        mirror.setMaterial(new Material().setKr(0.75));
 
-        };
-        List<Sphere> sphereList = new ArrayList<Sphere>();
-        for (int i = 0; i < points.length; i++)
-            sphereList.add(new Sphere(points[i], 1));
+        // pointLight2Sphere
+        Sphere pointLight2Sphere = new Sphere(new Point(150, -130, 100), 5);
+        pointLight2Sphere.setEmission(new Color(220, 50, 50)).setMaterial(new Material().setKt(0.01));
+        Polygon pointLight2Wire = new Polygon(
+                new Point(150.5, -130, 400),
+                new Point(150.5, -130, 105),
+                new Point(149.5, -130, 105),
+                new Point(149.5, -130, 400)
+        );
+
+        // Sphere
+        Sphere sphere = new Sphere(new Point(120, 0, 40), 40);
+        sphere.setEmission(new Color(50, 50, 10)).setMaterial(new Material().setKd(new Double3(0.85, 0.85, 0.1)).setKs(0.9).setShininess(800));
 
 
         // Add light
-        PointLight pointLight = new PointLight(new Color(400,400,360), new Point(0,0,350));
-        pointLight.setKc(2).setKl(1E-5).setKq(1E-7);
+        PointLight pointLight1 = new PointLight(new Color(500,500,480), new Point(0,0,350));
+        pointLight1.setKc(2).setKl(1E-4).setKq(2E-5);
 
-        SpotLight spotLight1 = new SpotLight(new Color(150, 300, 500), new Point(130, 158.5, 279.5), new Vector(0,0,-1));
-        spotLight1.setKc(2).setKl(5E-4).setKq(5E-6);
+        SpotLight spotLight1 = new SpotLight(new Color(225, 450, 825), new Point(130, 158.5, 279.5), new Vector(0,0,-1));
+        spotLight1.setKc(2).setKl(3E-4).setKq(3E-4);
 
         AmbientLight ambientLight = new AmbientLight(new Color(30,30,27), 1);
 
+        PointLight pointLight2 = new PointLight(new Color(75000, 7500, 6000), new Point(150, -130, 100));
+        pointLight2.setKc(2.5).setKl(0.05).setKq(3E-4);
+
         Scene scene = new Scene("PictureImprovements");
-        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2);
-        for (int i = 0; i < sphereList.size(); i++)
-            scene.geometries.add(sphereList.get(i));
+        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, mirror, pointLight2Sphere, pointLight2Wire, sphere);
         scene.setAmbientLight(ambientLight);
-        scene.lights.add(pointLight);
+        scene.lights.add(pointLight1);
         scene.lights.add(spotLight1);
+        scene.lights.add(pointLight2);
 
         Camera camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
                 .setVPSize(800,600).setVPDistance(400)
