@@ -110,10 +110,10 @@ public class PictureImprovements {
         Sphere pointLight2Sphere = new Sphere(new Point(150, -130, 100), 5);
         pointLight2Sphere.setEmission(new Color(220, 50, 50)).setMaterial(new Material().setKt(0.01));
         Polygon pointLight2Wire = new Polygon(
-                new Point(151, -130, 400),
-                new Point(151, -130, 105),
-                new Point(149, -130, 105),
-                new Point(149, -130, 400)
+                new Point(151.5, -130, 400),
+                new Point(151.5, -130, 105),
+                new Point(148.5, -130, 105),
+                new Point(148.5, -130, 400)
         );
         pointLight2Wire.setEmission(new Color(50, 50, 47));
 
@@ -155,6 +155,6 @@ public class PictureImprovements {
                 .setImageWriter(new ImageWriter("PictureWithImprovements", 800,600))
                 .setRayTracer(new RayTracerBasic(scene));
 
-        camera.renderImageWithImprovements(5).writeToImage();
+        camera.renderImageWithImprovements(33).writeToImage();
     }
 }

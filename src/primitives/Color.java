@@ -68,6 +68,11 @@ public class Color {
         return new Color(rr, rg, rb);
     }
 
+    public boolean MyEquals(Color color)
+    {
+        return (color.rgb.subtract(rgb).lowerThan(0.9));
+    }
+
     /** Scale the color by a scalar triad per rgb
      * @param  k scale factor per rgb
      * @return   new Color object which is the result of the operation */
