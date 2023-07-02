@@ -189,7 +189,7 @@ public class Camera {
     }
 
     /***
-     * This Function is helper function of constructBeamIntoColor;
+     * This Function is helper function of constructBeamIntoColor.
      * @param p A point on the VP.
      * @param x The size of the rectangle.
      * @param y The size of the rectangle.
