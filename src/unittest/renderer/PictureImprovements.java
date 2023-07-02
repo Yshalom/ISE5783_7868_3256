@@ -155,6 +155,6 @@ public class PictureImprovements {
                 .setImageWriter(new ImageWriter("PictureWithImprovements", 800,600))
                 .setRayTracer(new RayTracerBasic(scene));
 
-        camera.renderImageWithImprovements(4).writeToImage();
+        camera.renderImageWithImprovements(5).writeToImage();
     }
 }
