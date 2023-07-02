@@ -4,13 +4,15 @@ import java.util.List;
 
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
+import geometries.Polygon;
+import java.util.ArrayList;
+import static primitives.Util.isZero;
 
 
 /**
  * This class represents a ray in 3D space, defined by a starting point (p0) and a direction vector (dir).
  */
-public class Ray
-{
+public class Ray {
     private static final double DELTA = 0.1;
     private final Point p0; // The starting point of the ray
     private final Vector dir; // The direction vector of the ray (normalized)
@@ -21,7 +23,7 @@ public class Ray
      * @param p The starting point of the ray.
      * @param v The direction vector of the ray.
      */
-    public Ray(Point p, Vector v){
+    public Ray(Point p, Vector v) {
         p0 = p;
         dir = v.normalize();
     }
@@ -35,8 +37,8 @@ public class Ray
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Ray){
-            return (p0.equals((Object)((Ray)obj).p0) && dir.equals((Object)((Ray)obj).dir));
+        if (obj instanceof Ray) {
+            return (p0.equals((Object) ((Ray) obj).p0) && dir.equals((Object) ((Ray) obj).dir));
         }
         return false;
     }
@@ -70,16 +72,21 @@ public class Ray
         return dir;
     }
 
-    public Point getPoint(double t)
-    {
-        return p0.add(dir.scale(t));
+    public Point getPoint(double t) {
+        try {
+            return p0.add(dir.scale(t));
+        }
+        catch (Exception e)
+        {
+            return p0; // t == 0
+        }
     }
 
     /**
      * Find the closest point to the ray's head between a list of points.
      * @param points The list of point to run the function on.
      * @return The closest point which was found.
-    */
+     */
 
     //public Point findClosestPoint(List<Point> points) {
     //    return points == null || points.isEmpty() ? null
@@ -88,21 +95,20 @@ public class Ray
 
     /**
      * Find the closest point to the ray's head between a list of GeoPoint (which are including their points).
+     *
      * @param l The list of GeoPoint to run the function on.
      * @return The closest point which was found by GeoPoint format (geometry, point).
      */
-    public GeoPoint findClosestGeoPoint(List<GeoPoint> l)
-    {
-        if(l==null || l.size() == 0)
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> l) {
+        if (l == null || l.size() == 0)
             return null;
+
         double Min = l.get(0).point.distanceSquared(p0);
         int index = 0;
 
-        for (int i = 0; i < l.size(); i++)
-        {
+        for (int i = 0; i < l.size(); i++) {
             double Distance = l.get(i).point.distanceSquared(p0);
-            if (Min > Distance)
-            {
+            if (Min > Distance) {
                 index = i;
                 Min = Distance;
             }
@@ -118,10 +124,9 @@ public class Ray
      * @param direction A vector that will be used as the direction vector of the new ray.
      * @param normal Another vector that will determine the direction of the ray's head movement.
      */
-    public Ray(Point head, Vector direction, Vector normal)
-    {
+    public Ray(Point head, Vector direction, Vector normal) {
         Vector epsVector = normal.scale(normal.dotProduct(direction) < 0 ? -DELTA : DELTA);
-         p0 = head.add(epsVector);
-         dir = direction;
+        p0 = head.add(epsVector);
+        dir = direction;
     }
 }

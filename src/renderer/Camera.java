@@ -1,7 +1,9 @@
 package renderer;
+import geometries.Polygon;
 import primitives.*;
+import primitives.Vector;
 
-import java.util.MissingResourceException;
+import java.util.*;
 
 import static primitives.Util.isZero;
 
@@ -83,26 +85,75 @@ public class Camera {
      * @param i The pixel's location on the Y axis.
      * @return A ray from the camera to the pixel[i,j].
      */
-    public Ray constructRay(int nX, int nY, int j, int i)
+    public Ray constructRay(int nX, int nY, int i, int j)
     {
         Point pc=p0.add(vTo.scale(distance));
         double Ry=height/nY;
         double Rx=width/nX;
-        double yi=-(i-(nY-1)/2.0)*Ry;
-        double xj=(j-(nX-1)/2.0)*Rx;
+        double yj=-(j-(nY-1)/2.0)*Ry;
+        double xi=(i-(nX-1)/2.0)*Rx;
         Point pij;
-        if (isZero(yi)) { // yi == 0
-            if (isZero(xj)) // yi == 0 && xj == 0
+        if (isZero(yj)) { // yj == 0
+            if (isZero(xi)) // yj == 0 && xi == 0
                 pij = pc;
             else
-                pij = pc.add(vRight.scale(xj));
+                pij = pc.add(vRight.scale(xi));
         }
-        else if (isZero(xj)) // xj == 0
-            pij = pc.add(vUp.scale(yi));
+        else if (isZero(xi)) // xj == 0
+            pij = pc.add(vUp.scale(yj));
         else
-            pij=pc.add(vRight.scale(xj).add(vUp.scale(yi)));
+            pij=pc.add(vRight.scale(xi).add(vUp.scale(yj)));
 
         return new Ray(p0,pij.subtract(p0));
+    }
+
+    /**
+     * find construct beam of ray for a pixel on the View Plane.
+     * @param nX The amount of pixels in the X axis (right-left-axis).
+     * @param nY The amount of pixels in the Y axis (up-down-axis).
+     * @param Pj The pixel's location on the X axis.
+     * @param Pi The pixel's location on the Y axis.
+     * @param amountOfRaysInEachAxis the amount of the beam will be amountOfRaysInEachAxis squared.
+     * @return A beam of ray from the camera to the pixel[i,j].
+     */
+    public List<Ray> constructBeam(int nX, int nY, int Pi, int Pj, int amountOfRaysInEachAxis)
+    {
+        if (amountOfRaysInEachAxis <= 1)
+            return null;
+        Random random = new Random();
+
+        double Ry=height/nY;
+        double Rx=width/nX;
+        Point pij = p0.add(vTo.scale(distance));
+        if (!isZero(Rx * Pi - width/2))
+            pij = pij.add(vRight.scale(Rx * Pi - width/2));
+        if (!isZero(Ry * Pj - height/2))
+            pij = pij.add(vUp.scale(- Ry * Pj + height/2));
+
+        Vector v1 = vUp.scale(Ry / (amountOfRaysInEachAxis - 1));
+        Vector v2 = vRight.scale(Rx / (amountOfRaysInEachAxis - 1));
+
+        // Make a jittered grid
+        List<Ray> Beam = new ArrayList<Ray>(amountOfRaysInEachAxis * amountOfRaysInEachAxis);
+        for (int i = 0; i < amountOfRaysInEachAxis; i++)
+            for (int j = 0; j < amountOfRaysInEachAxis; j++) {
+                Point aimPoint = pij;
+
+                if (i != 0 && i != amountOfRaysInEachAxis - 1)
+                    aimPoint = aimPoint.add(v1.scale(i + random.nextDouble() - 0.5));
+                else if (i != 0)
+                    aimPoint = aimPoint.add(v1.scale(i));
+                // if (i == 0) do nothing
+
+                if (j != 0 && j != amountOfRaysInEachAxis - 1)
+                    aimPoint = aimPoint.add(v2.scale(j + random.nextDouble() - 0.5));
+                else if (j != 0)
+                    aimPoint = aimPoint.add(v2.scale(j));
+                // if (j == 0) do nothing
+
+                Beam.add(new Ray(p0, aimPoint.subtract(p0)));
+            }
+        return Beam;
     }
 
     /**
@@ -111,14 +162,35 @@ public class Camera {
      */
     public Camera renderImage()
     {
+        return renderImage(false, 0);
+    }
+
+    public Camera renderImageWithImprovements(int amountOfRaysInEachAxis)
+    {
+        return renderImage(true, amountOfRaysInEachAxis);
+    }
+
+    private Camera renderImage(boolean WithImprovements, int amountOfRaysInEachAxis)
+    {
         if (p0 == null || vUp == null || vTo == null || vRight == null || width == 0 || height == 0 || distance == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "");
 
         int Nx = imageWriter.getNx();
         int Ny = imageWriter.getNy();
         for (int i = 0; i < Nx; i++)
-            for (int j = 0; j < Ny; j++)
+            for (int j = 0; j < Ny; j++) {
+                if (WithImprovements) {
+                    List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
+                    Color color = Color.BLACK;
+                    for (Ray ray: Beam) {
+                        color = color.add(rayTracer.traceRay(ray));
+                    }
+                    color = color.scale(1.0 / amountOfRaysInEachAxis / amountOfRaysInEachAxis);
+                    imageWriter.writePixel(i, j, color);
+                }
+                else
                     imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+            }
         return this;
     }
 

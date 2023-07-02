@@ -8,6 +8,7 @@ import primitives.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import unittest.PointTests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,11 +84,11 @@ public class PictureImprovements {
 
         // Lamp
         Polygon lamp1 = new Polygon(
-                new Point(130, 162, 279),
-                new Point(130, 155, 279),
+                new Point(130, 162, 279.5),
+                new Point(130, 155, 279.5),
                 new Point(130, 155, 0),
                 new Point(130, 162, 0));
-        lamp1.setMaterial(new Material().setKd(0.7));
+        lamp1.setEmission(new Color(50, 50, 47));;
 
         Polygon lamp2 = new Polygon(
                 new Point(130, 172, 280),
@@ -109,11 +110,12 @@ public class PictureImprovements {
         Sphere pointLight2Sphere = new Sphere(new Point(150, -130, 100), 5);
         pointLight2Sphere.setEmission(new Color(220, 50, 50)).setMaterial(new Material().setKt(0.01));
         Polygon pointLight2Wire = new Polygon(
-                new Point(150.5, -130, 400),
-                new Point(150.5, -130, 105),
-                new Point(149.5, -130, 105),
-                new Point(149.5, -130, 400)
+                new Point(151, -130, 400),
+                new Point(151, -130, 105),
+                new Point(149, -130, 105),
+                new Point(149, -130, 400)
         );
+        pointLight2Wire.setEmission(new Color(50, 50, 47));
 
         // Sphere
         Sphere sphere = new Sphere(new Point(120, 0, 40), 40);
@@ -133,17 +135,26 @@ public class PictureImprovements {
         pointLight2.setKc(2.5).setKl(0.05).setKq(3E-4);
 
         Scene scene = new Scene("PictureImprovements");
-        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, mirror, pointLight2Sphere, pointLight2Wire, sphere);
+        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, pointLight2Sphere, pointLight2Wire, sphere, mirror);
         scene.setAmbientLight(ambientLight);
         scene.lights.add(pointLight1);
         scene.lights.add(spotLight1);
         scene.lights.add(pointLight2);
 
+        // Without improvements
         Camera camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
                 .setVPSize(800,600).setVPDistance(400)
-                .setImageWriter(new ImageWriter("PictureImprovements", 800,600))
+                .setImageWriter(new ImageWriter("PictureWithoutImprovements", 800,600))
                 .setRayTracer(new RayTracerBasic(scene));
 
         camera.renderImage().writeToImage();
+
+        // With improvements
+        camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
+                .setVPSize(800,600).setVPDistance(400)
+                .setImageWriter(new ImageWriter("PictureWithImprovements", 800,600))
+                .setRayTracer(new RayTracerBasic(scene));
+
+        camera.renderImageWithImprovements(4).writeToImage();
     }
 }
