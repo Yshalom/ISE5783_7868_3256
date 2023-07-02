@@ -57,6 +57,7 @@ public class Camera {
         return this;
     }
 
+
     /**
      * Setter function for the imageWriter
      * @param imageWriter The new imageWriter
