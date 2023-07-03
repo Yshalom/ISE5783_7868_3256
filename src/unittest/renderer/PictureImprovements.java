@@ -144,7 +144,7 @@ public class PictureImprovements {
         // Without improvements
         Camera camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
                 .setVPSize(800,600).setVPDistance(400)
-                .setImageWriter(new ImageWriter("PictureWithoutImprovements", 800,600))
+                .setImageWriter(new ImageWriter("PictureWithoutImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
 
         camera.renderImage().writeToImage();
@@ -152,7 +152,7 @@ public class PictureImprovements {
         // With improvements
         camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
                 .setVPSize(800,600).setVPDistance(400)
-                .setImageWriter(new ImageWriter("PictureWithImprovements", 800,600))
+                .setImageWriter(new ImageWriter("PictureWithImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
 
         camera.renderImageWithImprovements(65).writeToImage();

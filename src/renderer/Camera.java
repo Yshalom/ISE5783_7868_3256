@@ -3,11 +3,13 @@ import geometries.Polygon;
 import primitives.*;
 import primitives.Vector;
 
+import javax.swing.*;
 import java.util.*;
 
 import static primitives.Util.isZero;
 
 public class Camera {
+    private final int NumberOfThread = 8;
     private Point p0;
     private Vector vUp, vTo, vRight;
     private double width, height, distance;
@@ -128,8 +130,8 @@ public class Camera {
         Point pij = p0.add(vTo.scale(distance));
         if (!isZero(Rx * Pi - width/2))
             pij = pij.add(vRight.scale(Rx * Pi - width/2));
-        if (!isZero(Ry * Pj - height/2))
-            pij = pij.add(vUp.scale(- Ry * Pj + height/2));
+        if (!isZero(Ry * (Pj + 1) - height/2))
+            pij = pij.add(vUp.scale(- Ry * (Pj + 1) + height/2));
 
         Vector v1 = vUp.scale(Ry / (amountOfRaysInEachAxis - 1));
         Vector v2 = vRight.scale(Rx / (amountOfRaysInEachAxis - 1));
@@ -177,8 +179,8 @@ public class Camera {
         Point pij = p0.add(vTo.scale(distance));
         if (!isZero(Rx * Pi - width/2))
             pij = pij.add(vRight.scale(Rx * Pi - width/2));
-        if (!isZero(Ry * Pj - height/2))
-            pij = pij.add(vUp.scale(- Ry * Pj + height/2));
+        if (!isZero(Ry * (Pj + 1) - height/2))
+            pij = pij.add(vUp.scale(- Ry * (Pj + 1) + height/2));
 
         Color[] colors = constructBeamIntoColorHelper(pij, Rx, Ry, (int)(Math.log(amountOfRaysInEachAxis + 1) / Math.log(2)), null);
 
@@ -260,25 +262,50 @@ public class Camera {
 
         int Nx = imageWriter.getNx();
         int Ny = imageWriter.getNy();
-        for (int i = 0; i < Nx; i++)
-            for (int j = 0; j < Ny; j++) {
-                if (WithPictureImprovements)
-                {
-                    if (WithRunTimeImprovements)
-                        imageWriter.writePixel(i, j, constructBeamIntoColor(Nx, Ny, i, j, amountOfRaysInEachAxis));
-                    else
-                    {
-                        List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
-                        Color color = Color.BLACK;
-                        for (Ray ray : Beam)
-                            color = color.add(rayTracer.traceRay(ray));
-                        color = color.reduce(Beam.size());
-                        imageWriter.writePixel(i, j, color);
+
+        Thread[] threads = new Thread[NumberOfThread];
+        for (int parallelIndex = 0; parallelIndex < NumberOfThread; parallelIndex++) {
+            final int ThreadParam = parallelIndex;
+            threads[parallelIndex] = new Thread(() -> {
+                for (int i = ThreadParam; i < Nx; i += NumberOfThread) {
+                    for (int j = 0; j < Ny; j++) {
+                        if (WithPictureImprovements) {
+                            if (WithRunTimeImprovements)
+                                imageWriter.writePixel(i, j, constructBeamIntoColor(Nx, Ny, i, j, amountOfRaysInEachAxis));
+                            else {
+                                List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
+                                Color color = Color.BLACK;
+                                for (Ray ray : Beam)
+                                    color = color.add(rayTracer.traceRay(ray));
+                                color = color.reduce(Beam.size());
+                                imageWriter.writePixel(i, j, color);
+                            }
+                        } else
+                            imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
                     }
                 }
-                else
-                    imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+            });
+        }
+
+        for (int i = 0; i < NumberOfThread; i++)
+            threads[i].start();
+
+        for (int i = 0; i < NumberOfThread; i++) {
+            try {
+                threads[i].join();
             }
+            catch (InterruptedException e)
+            {
+                boolean stop = false;
+                while (!stop)
+                {
+                    stop = true;
+                    for (int j = 0; j < NumberOfThread && stop; j++)
+                        stop = !threads[j].isAlive();
+                }
+            }
+        }
+
         return this;
     }
 
