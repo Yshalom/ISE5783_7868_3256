@@ -250,63 +250,80 @@ public class Camera {
         return renderImage(false, false, 0);
     }
 
-    public Camera renderImageWithImprovements(int amountOfRaysInEachAxis)
+    public Camera renderImageWithImageImprovements(int amountOfRaysInEachAxis)
+    {
+        return renderImage(true, false, amountOfRaysInEachAxis);
+    }
+
+    public Camera renderImageWithImageAndRunTimeImprovements(int amountOfRaysInEachAxis)
     {
         return renderImage(true, true, amountOfRaysInEachAxis);
     }
 
-    private Camera renderImage(boolean WithPictureImprovements, boolean WithRunTimeImprovements, int amountOfRaysInEachAxis)
+    public Camera renderImageRunTimeImprovements()
     {
+        return renderImage(false, true, 0);
+    }
+
+    private Camera renderImage(boolean WithPictureImprovements, boolean WithRunTimeImprovements, int amountOfRaysInEachAxis) {
         if (p0 == null || vUp == null || vTo == null || vRight == null || width == 0 || height == 0 || distance == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "");
 
         int Nx = imageWriter.getNx();
         int Ny = imageWriter.getNy();
 
-        Thread[] threads = new Thread[NumberOfThread];
-        for (int parallelIndex = 0; parallelIndex < NumberOfThread; parallelIndex++) {
-            final int ThreadParam = parallelIndex;
-            threads[parallelIndex] = new Thread(() -> {
-                for (int i = ThreadParam; i < Nx; i += NumberOfThread) {
-                    for (int j = 0; j < Ny; j++) {
-                        if (WithPictureImprovements) {
-                            if (WithRunTimeImprovements)
-                                imageWriter.writePixel(i, j, constructBeamIntoColor(Nx, Ny, i, j, amountOfRaysInEachAxis));
-                            else {
-                                List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
-                                Color color = Color.BLACK;
-                                for (Ray ray : Beam)
-                                    color = color.add(rayTracer.traceRay(ray));
-                                color = color.reduce(Beam.size());
-                                imageWriter.writePixel(i, j, color);
-                            }
-                        } else
-                            imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+        // Use multi-threading
+        if (WithRunTimeImprovements) {
+            Thread[] threads = new Thread[NumberOfThread];
+            for (int parallelIndex = 0; parallelIndex < NumberOfThread; parallelIndex++) {
+                final int ThreadParam = parallelIndex;
+                threads[parallelIndex] = new Thread(() ->
+                {
+                    renderImageHelper(Nx, Ny, ThreadParam, NumberOfThread, WithPictureImprovements, true, amountOfRaysInEachAxis);
+                });
+
+                threads[parallelIndex].start();
+            }
+
+            for (int i = 0; i < NumberOfThread; i++) {
+                try {
+                    threads[i].join();
+                } catch (InterruptedException e) {
+                    boolean stop = false;
+                    while (!stop) {
+                        stop = true;
+                        for (int j = 0; j < NumberOfThread && stop; j++)
+                            stop = !threads[j].isAlive();
                     }
                 }
-            });
-        }
-
-        for (int i = 0; i < NumberOfThread; i++)
-            threads[i].start();
-
-        for (int i = 0; i < NumberOfThread; i++) {
-            try {
-                threads[i].join();
-            }
-            catch (InterruptedException e)
-            {
-                boolean stop = false;
-                while (!stop)
-                {
-                    stop = true;
-                    for (int j = 0; j < NumberOfThread && stop; j++)
-                        stop = !threads[j].isAlive();
-                }
             }
         }
+        // Use single-threading
+        else
+            renderImageHelper(Nx, Ny, 0, 1, WithPictureImprovements, false, amountOfRaysInEachAxis);
 
         return this;
+    }
+
+    private void renderImageHelper(int Nx, int Ny, int ThreadParam1, int ThreadParam2, boolean WithPictureImprovements, boolean WithRunTimeImprovements, int amountOfRaysInEachAxis)
+    {
+        for (int i = ThreadParam1; i < Nx; i += ThreadParam2) {
+            for (int j = 0; j < Ny; j++) {
+                if (WithPictureImprovements) {
+                    if (WithRunTimeImprovements)
+                        imageWriter.writePixel(i, j, constructBeamIntoColor(Nx, Ny, i, j, amountOfRaysInEachAxis));
+                    else {
+                        List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
+                        Color color = Color.BLACK;
+                        for (Ray ray : Beam)
+                            color = color.add(rayTracer.traceRay(ray));
+                        color = color.reduce(Beam.size());
+                        imageWriter.writePixel(i, j, color);
+                    }
+                } else
+                    imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
+            }
+        }
     }
 
     /**

@@ -89,6 +89,9 @@ public class RayTracerBasic extends RayTracerBase {
     }
     Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v)
     {
+        if (isZero(l.dotProduct(n)))
+            return Double3.ZERO;
+
         Vector r = l.subtract(n.scale( 2 * (l.dotProduct(n))));
         if (v.dotProduct(r) >= 0)
             return Double3.ZERO;

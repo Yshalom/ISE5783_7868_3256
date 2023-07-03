@@ -123,7 +123,7 @@ public class PictureImprovements {
 
 
         // Add light
-        PointLight pointLight1 = new PointLight(new Color(500,500,480), new Point(0,0,350));
+        PointLight pointLight1 = new PointLight(new Color(350,350,342), new Point(0,0,350));
         pointLight1.setKc(2).setKl(1E-4).setKq(2E-5);
 
         SpotLight spotLight1 = new SpotLight(new Color(225, 450, 825), new Point(130, 158.5, 279.5), new Vector(0,0,-1));
@@ -134,19 +134,25 @@ public class PictureImprovements {
         PointLight pointLight2 = new PointLight(new Color(75000, 7500, 6000), new Point(150, -130, 100));
         pointLight2.setKc(2.5).setKl(0.05).setKq(3E-4);
 
+        SpotLight spotLight2 = new SpotLight(new Color(300,290,280), new Point(30,130,399.5), new Vector(0, -1, -5));
+        SpotLight spotLight3 = new SpotLight(new Color(300,290,280), new Point(30,-130,399.5), new Vector(0, 1, -5));
+        spotLight2.setKc(2).setKl(4E-3).setKq(1E-4);
+        spotLight3.setKc(2).setKl(4E-3).setKq(1E-4);
+
         Scene scene = new Scene("PictureImprovements");
         scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, pointLight2Sphere, pointLight2Wire, sphere, mirror);
         scene.setAmbientLight(ambientLight);
         scene.lights.add(pointLight1);
         scene.lights.add(spotLight1);
         scene.lights.add(pointLight2);
+        scene.lights.add(spotLight2);
+        scene.lights.add(spotLight3);
 
         // Without improvements
         Camera camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
                 .setVPSize(800,600).setVPDistance(400)
                 .setImageWriter(new ImageWriter("PictureWithoutImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
-
         camera.renderImage().writeToImage();
 
         // With improvements
@@ -155,6 +161,6 @@ public class PictureImprovements {
                 .setImageWriter(new ImageWriter("PictureWithImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
 
-        camera.renderImageWithImprovements(65).writeToImage();
+        camera.renderImageWithImageAndRunTimeImprovements(33).writeToImage();
     }
 }
