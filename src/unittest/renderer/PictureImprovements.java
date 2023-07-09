@@ -98,13 +98,13 @@ public class PictureImprovements {
         lamp2.setEmission(new Color(190, 230, 255));
 
         // Mirror
-        Polygon mirror = new Polygon(
-                new Point(10, -199, 50),
-                new Point(10, -199, 250),
-                new Point(80, -199, 250),
-                new Point(80, -199, 50)
+        Polygon mirror1 = new Polygon(
+                new Point(-10, -199.5, 50),
+                new Point(-10, -199.5, 250),
+                new Point(80, -199.5, 250),
+                new Point(80, -199.5, 50)
         );
-        mirror.setMaterial(new Material().setKr(0.75));
+        mirror1.setMaterial(new Material().setKr(0.8).setKs(0.8).setSnellParameter(5000));
 
         // pointLight2Sphere
         Sphere pointLight2Sphere = new Sphere(new Point(150, -130, 100), 5);
@@ -117,12 +117,15 @@ public class PictureImprovements {
         );
         pointLight2Wire.setEmission(new Color(50, 50, 47));
 
-        // Sphere
-        Sphere sphere = new Sphere(new Point(120, 0, 40), 40);
-        sphere.setEmission(new Color(50, 50, 10)).setMaterial(new Material().setKd(new Double3(0.85, 0.85, 0.1)).setKs(0.9).setShininess(800));
+        // Add Spheres
+        Sphere sphere1 = new Sphere(new Point(110, 0, 40), 40);
+        sphere1.setEmission(new Color(50, 50, 10)).setMaterial(new Material().setKd(new Double3(0.85, 0.85, 0.1)).setKs(0.9).setShininess(500));
+
+        Sphere sphere2 = new Sphere(new Point(50, 50, 31), 30);
+        sphere2.setEmission(new Color(0, 10, 15)).setMaterial(new Material().setKd(new Double3(0.02, 0.07, 0.08)).setKs(0.9).setShininess(600).setKt(0.83).setSnellParameter(25));
 
 
-        // Add light
+        // Add lights
         PointLight pointLight1 = new PointLight(new Color(350,350,342), new Point(0,0,350));
         pointLight1.setKc(2).setKl(1E-4).setKq(2E-5);
 
@@ -140,7 +143,7 @@ public class PictureImprovements {
         spotLight3.setKc(2).setKl(4E-3).setKq(1E-4);
 
         Scene scene = new Scene("PictureImprovements");
-        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, pointLight2Sphere, pointLight2Wire, sphere, mirror);
+        scene.geometries.add(left, right, forward, floor, roof, Desk1, Desk2, Desk3, Desk4, Desk5, lamp1, lamp2, pointLight2Sphere, pointLight2Wire, sphere1, sphere2, mirror1);
         scene.setAmbientLight(ambientLight);
         scene.lights.add(pointLight1);
         scene.lights.add(spotLight1);
@@ -149,18 +152,15 @@ public class PictureImprovements {
         scene.lights.add(spotLight3);
 
         // Without improvements
-        Camera camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
-                .setVPSize(800,600).setVPDistance(400)
+        Camera camera = new Camera(new Point(-300,0,200),new Vector(1,0,0),new Vector(0,0,1))
+                .setVPSize(800,600).setVPDistance(500)
                 .setImageWriter(new ImageWriter("PictureWithoutImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
         camera.renderImage().writeToImage();
 
         // With improvements
-        camera = new Camera(new Point(-200,0,200),new Vector(1,0,0),new Vector(0,0,1))
-                .setVPSize(800,600).setVPDistance(400)
-                .setImageWriter(new ImageWriter("PictureWithImprovements", 1000,750))
+        camera.setImageWriter(new ImageWriter("PictureWithImprovements", 1000,750))
                 .setRayTracer(new RayTracerBasic(scene));
-
         camera.renderImageWithImageAndRunTimeImprovements(33).writeToImage();
     }
 }

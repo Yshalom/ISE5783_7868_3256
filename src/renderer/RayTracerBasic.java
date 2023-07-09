@@ -12,8 +12,6 @@ public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    private double SnellParameter = 1; // An optional value for snell law calculation.
-
     public RayTracerBasic(Scene scene)
     {
         super(scene);
@@ -41,9 +39,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint gp, Ray ray)
     {
-        SnellParameter = 1;
-
-        return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, Double3.ONE)
+        return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, Double3.ONE, 1)
                 .add(scene.ambientLight.getIntensity());
     }
 
@@ -54,11 +50,11 @@ public class RayTracerBasic extends RayTracerBase {
      * @param gp The point to calculate the color on.
      * @return The color at the point that have come from reflected light and the refracted light.
      */
-    private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k)
+    private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k, double SnellParameter)
     {
         Color color = calcLocalEffects(gp, ray);
         return 1 == level ? color
-                : color.add(calcGlobalEffects(gp, ray, level, k));
+                : color.add(calcGlobalEffects(gp, ray, level, k, SnellParameter));
     }
 
     private Color calcLocalEffects(GeoPoint gp, Ray ray)
@@ -136,15 +132,15 @@ public class RayTracerBasic extends RayTracerBase {
         return ktr;
     }
 
-    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k, double SnellParameter) {
         Vector v = ray.getDir();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        return calcGlobalEffect(constructReflectedRay(gp, v, n),level, k, material.kR)
-                .add(calcGlobalEffect(constructRefractedRay(gp, v, n),level, k, material.kT));
+        return calcGlobalEffect(constructReflectedRay(gp, v, n),level, k, material.kR, SnellParameter)
+                .add(calcGlobalEffect(constructRefractedRay(gp, v, n, SnellParameter),level, k, material.kT, gp.geometry.getMaterial().SnellParameter));
     }
 
-    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx)
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx, double SnellParameter)
     {
         Double3 kkx = k.product(kx);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
@@ -152,7 +148,7 @@ public class RayTracerBasic extends RayTracerBase {
         if (gp == null)
             return scene.background.scale(kx);
         return isZero(gp.geometry.getNormal(gp.point).dotProduct(ray.getDir())) ? Color.BLACK
-                : calcColor(gp, ray, level-1, kkx).scale(kx);
+                : calcColor(gp, ray, level-1, kkx, SnellParameter).scale(kx);
     }
 
     /**
@@ -175,7 +171,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n The normal to the geometry.
      * @return The refracted vector.
      */
-    Ray constructRefractedRay(GeoPoint gp, Vector v, Vector n)
+    Ray constructRefractedRay(GeoPoint gp, Vector v, Vector n, double SnellParameter)
     {
         // Without snell low:
         if (SnellParameter == gp.geometry.getMaterial().SnellParameter)

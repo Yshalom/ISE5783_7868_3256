@@ -119,7 +119,7 @@ public class Camera {
      * @param amountOfRaysInEachAxis the amount of the beam will be amountOfRaysInEachAxis squared.
      * @return A beam of ray from the camera to the pixel[i,j].
      */
-    private List<Ray> constructBeam(int nX, int nY, int Pi, int Pj, int amountOfRaysInEachAxis)
+    private Color constructBeamSlow(int nX, int nY, int Pi, int Pj, int amountOfRaysInEachAxis)
     {
         if (amountOfRaysInEachAxis <= 1)
             return null;
@@ -156,7 +156,13 @@ public class Camera {
 
                 Beam.add(new Ray(p0, aimPoint.subtract(p0)));
             }
-        return Beam;
+
+        Color color = Color.BLACK;
+        for (Ray ray : Beam)
+            color = color.add(rayTracer.traceRay(ray));
+        color = color.reduce(Beam.size());
+
+        return color;
     }
 
     /**
@@ -169,7 +175,7 @@ public class Camera {
      *        ---> It should be in a format of 2^n+1 if it's not the function will use a smaller number which is the previous one to be in this format.
      * @return A beam of ray from the camera to the pixel[i,j].
      */
-    private Color constructBeamIntoColor(int nX, int nY, int Pi, int Pj, int amountOfRaysInEachAxis)
+    private Color constructBeamFast(int nX, int nY, int Pi, int Pj, int amountOfRaysInEachAxis)
     {
         if (amountOfRaysInEachAxis <= 1)
             return null;
@@ -182,7 +188,7 @@ public class Camera {
         if (!isZero(Ry * (Pj + 1) - height/2))
             pij = pij.add(vUp.scale(- Ry * (Pj + 1) + height/2));
 
-        Color[] colors = constructBeamIntoColorHelper(pij, Rx, Ry, (int)(Math.log(amountOfRaysInEachAxis + 1) / Math.log(2)), null);
+        Color[] colors = constructBeamFastHelper(pij, Rx, Ry, (int)(Math.log(amountOfRaysInEachAxis - 1) / Math.log(2)), null);
 
         for (int i = 1; i < 4; i++)
             colors[0] = colors[0].add(colors[i]);
@@ -199,7 +205,7 @@ public class Camera {
      * @param colors An optimal parameter to help the function run faster.
      * @return 4 colors that their average is the color of the pixel.
      */
-    private Color[] constructBeamIntoColorHelper(Point p, double x, double y, int maxDeep, Color[] colors)
+    private Color[] constructBeamFastHelper(Point p, double x, double y, int maxDeep, Color[] colors)
     {
         if (colors == null)
             colors = new Color[4];
@@ -224,9 +230,9 @@ public class Camera {
 
         // Recursive step
         Color[][] colorsOfRec = new Color[4][4];
-        colorsOfRec[0] = constructBeamIntoColorHelper(p, x / 2, y / 2, maxDeep - 1, new Color[]{colors[0], null, null, null});
-        colorsOfRec[1] = constructBeamIntoColorHelper(p.add(vRight.scale(x / 2)), x / 2, y / 2, maxDeep - 1, new Color[]{colorsOfRec[0][1], colors[1], colorsOfRec[0][2], null});
-        colorsOfRec[2] = constructBeamIntoColorHelper(p.add(vUp.scale(y / 2)), x / 2, y / 2, maxDeep - 1, new Color[]{colorsOfRec[0][2], colorsOfRec[0][3], colors[2], null});
+        colorsOfRec[0] = constructBeamFastHelper(p, x / 2, y / 2, maxDeep - 1, new Color[]{colors[0], null, null, null});
+        colorsOfRec[1] = constructBeamFastHelper(p.add(vRight.scale(x / 2)), x / 2, y / 2, maxDeep - 1, new Color[]{colorsOfRec[0][1], colors[1], colorsOfRec[0][2], null});
+        colorsOfRec[2] = constructBeamFastHelper(p.add(vUp.scale(y / 2)), x / 2, y / 2, maxDeep - 1, new Color[]{colorsOfRec[0][2], colorsOfRec[0][3], colors[2], null});
         colorsOfRec[3] = new Color[]{colorsOfRec[0][3], colorsOfRec[1][3], colorsOfRec[2][3], colors[3]};
 
         Color[] res = new Color[4];
@@ -247,7 +253,7 @@ public class Camera {
      */
     public Camera renderImage()
     {
-        return renderImage(false, false, 0);
+        return renderImage(false, false, 1);
     }
 
     public Camera renderImageWithImageImprovements(int amountOfRaysInEachAxis)
@@ -262,7 +268,7 @@ public class Camera {
 
     public Camera renderImageRunTimeImprovements()
     {
-        return renderImage(false, true, 0);
+        return renderImage(false, true, 1);
     }
 
     private Camera renderImage(boolean WithPictureImprovements, boolean WithRunTimeImprovements, int amountOfRaysInEachAxis) {
@@ -311,15 +317,9 @@ public class Camera {
             for (int j = 0; j < Ny; j++) {
                 if (WithPictureImprovements) {
                     if (WithRunTimeImprovements)
-                        imageWriter.writePixel(i, j, constructBeamIntoColor(Nx, Ny, i, j, amountOfRaysInEachAxis));
-                    else {
-                        List<Ray> Beam = constructBeam(Nx, Ny, i, j, amountOfRaysInEachAxis);
-                        Color color = Color.BLACK;
-                        for (Ray ray : Beam)
-                            color = color.add(rayTracer.traceRay(ray));
-                        color = color.reduce(Beam.size());
-                        imageWriter.writePixel(i, j, color);
-                    }
+                        imageWriter.writePixel(i, j, constructBeamFast(Nx, Ny, i, j, amountOfRaysInEachAxis));
+                    else
+                        imageWriter.writePixel(i, j, constructBeamSlow(Nx, Ny, i, j, amountOfRaysInEachAxis));
                 } else
                     imageWriter.writePixel(i, j, castRay(Nx, Ny, i, j));
             }
